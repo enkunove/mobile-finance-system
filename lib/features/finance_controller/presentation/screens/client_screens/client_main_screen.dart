@@ -15,7 +15,6 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch the client from GetIt when the screen is loaded
     _client = GetIt.instance<Client>();
   }
 
@@ -58,12 +57,6 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
               subtitle: Text(_client.email),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // You can add actions like logging out or navigating elsewhere
-              },
-              child: const Text('Выйти'),
-            ),
           ],
         ),
       ),

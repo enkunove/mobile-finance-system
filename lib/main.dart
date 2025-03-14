@@ -11,6 +11,7 @@ import 'package:finance_system_controller/features/finance_controller/domain/rep
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/client_usecases/account_management_usecases.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/client_usecases/registration_usecase.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/login.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/bloc/login_state_management/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,8 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        Provider(create: (_) => InjectionContainer.sl<RegisterBloc>()),  // Теперь sl<RegisterBloc>() корректно возвращает объект
+        Provider(create: (_) => InjectionContainer.sl<RegisterBloc>()),
+        Provider(create: (_) => InjectionContainer.sl<LoginBloc>()),
       ],
       child: Application(),
     ),

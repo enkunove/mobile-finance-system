@@ -9,6 +9,7 @@ import '../features/finance_controller/domain/entities/system_users/client.dart'
 import '../features/finance_controller/domain/repositories/system_users/client_repository.dart';
 import '../features/finance_controller/domain/usecases/client_usecases/account_management_usecases.dart';
 import '../features/finance_controller/domain/usecases/login.dart';
+import '../features/finance_controller/presentation/bloc/login_state_management/login_bloc.dart';
 import '../features/finance_controller/presentation/bloc/registration_state_management/register_bloc.dart';
 
 class InjectionContainer {
@@ -38,7 +39,7 @@ class InjectionContainer {
       loginUsecase: sl<LoginUsecase>(),
     ));
 
-    sl.registerFactory<LoginBloc>(() => LoginBloc());
+    sl.registerFactory<LoginBloc>(() => LoginBloc(sl()));
 
     sl.registerLazySingleton<LoginUsecase>(() => LoginUsecase(sl()));
 

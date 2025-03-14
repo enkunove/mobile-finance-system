@@ -58,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     validator: (value) => value!.isEmpty ? 'Введите пароль' : null,
                   ),
                   const SizedBox(height: 20),
-                  BlocConsumer<LoginrBloc, LoginState>(
+                  BlocConsumer<LoginBloc, LoginState>(
                     listener: (context, state) {
                       if (state is LoginSuccess) {
                         InjectionContainer.sl.unregister<Client>();
@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           context,
                           MaterialPageRoute(builder: (_) => const ClientMainScreen()),
                         );
-                      } else if (state is RegisterFailure) {
+                      } else if (state is LoginFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text(state.message)),
                         );
@@ -80,7 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return ElevatedButton(
                         onPressed: () => _register(context),
-                        child: const Text('Зарегистрироваться'),
+                        child: const Text('Войти'),
                       );
                     },
                   ),

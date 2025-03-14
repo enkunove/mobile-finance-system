@@ -3,6 +3,8 @@ import 'package:finance_system_controller/features/finance_controller/presentati
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/start_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../features/finance_controller/presentation/screens/login_screen.dart';
+
 class Application extends StatelessWidget {
   const Application({super.key});
 
@@ -18,7 +20,7 @@ class Application extends StatelessWidget {
       routes: {
         "/" : (context) => StartScreen(),
         "/registration" : (context) => RegistrationScreen(),
-        //"/login" : (context) => LoginScreen()
+        "/login" : (context) => LoginScreen()
       },
     );
   }
