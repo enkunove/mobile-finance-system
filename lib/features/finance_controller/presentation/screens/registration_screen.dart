@@ -34,8 +34,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         phone: _phoneController.text,
         email: _emailController.text,
       );
-      // Вывод для отладки:
-      debugPrint('Dispatching RegisterClient event: $client');
       context.read<RegisterBloc>().add(RegisterClient(client));
     }
   }
@@ -91,12 +89,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     BlocConsumer<RegisterBloc, RegisterState>(
                       listener: (context, state) {
                         if (state is RegisterSuccess) {
-                          // Unregister the old client
                           InjectionContainer.sl.unregister<Client>();
-                          // Register the new client (updated client data)
                           InjectionContainer.sl.registerSingleton<Client>(state.client);
-
-                          // After updating the client, navigate to the client main screen
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(builder: (_) => const ClientMainScreen()),

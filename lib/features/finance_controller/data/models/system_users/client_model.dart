@@ -1,17 +1,24 @@
-import 'dart:convert';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import '../transfer_model.dart';
 import '../account_model.dart';
 import '../credit_model.dart';
 
 class ClientModel extends Client {
+  @override
   final String fullName;
+  @override
   final String passportSeriesAndNumber;
+  @override
   final int idNumber;
+  @override
   final String phone;
+  @override
   final String email;
+  @override
   final List<AccountModel> accounts;
+  @override
   final List<CreditModel> credits;
+  @override
   final List<TransferModel> transfers;
 
   ClientModel({

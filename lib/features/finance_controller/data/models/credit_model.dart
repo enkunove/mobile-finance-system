@@ -1,7 +1,9 @@
 import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
 
 class CreditModel extends Credit{
+  @override
   final double percentage;
+  @override
   final double amount;
 
   CreditModel(this.percentage, this.amount) : super(percentage, amount);

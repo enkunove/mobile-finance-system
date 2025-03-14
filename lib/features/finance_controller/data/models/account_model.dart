@@ -2,11 +2,16 @@ import 'package:finance_system_controller/features/finance_controller/data/model
 import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
 
 class AccountModel extends Account{
+  @override
   int accountId;
+  @override
   final int clientId;
   final BankModel bankModel;
+  @override
   double balance;
+  @override
   bool isBlocked;
+  @override
   bool isFrozen;
 
   AccountModel({

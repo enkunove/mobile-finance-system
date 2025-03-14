@@ -1,24 +1,16 @@
 import 'package:finance_system_controller/features/finance_controller/data/models/system_users/client_model.dart';
-import '../../domain/entities/enterprise.dart';
-import '../../domain/entities/system_users/client.dart';
 import '../../domain/entities/bank.dart';
 
 class BankModel extends Bank {
   BankModel({
-    required int id,
-    required String type,
-    required String name,
-    required String pin,
-    required String bic,
-    required String address,
+    required super.id,
+    required super.type,
+    required super.name,
+    required super.pin,
+    required super.bic,
+    required super.address,
     List<ClientModel>? clients,
   }) : super(
-    id: id,
-    type: type,
-    name: name,
-    pin: pin,
-    bic: bic,
-    address: address,
     clients: clients ?? [],
   );
 

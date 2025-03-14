@@ -1,4 +1,3 @@
-import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/client_main_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/registration_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +17,9 @@ class Application extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
       routes: {
-        "/" : (context) => StartScreen(),
-        "/registration" : (context) => RegistrationScreen(),
-        "/login" : (context) => LoginScreen()
+        "/" : (context) => const StartScreen(),
+        "/registration" : (context) => const RegistrationScreen(),
+        "/login" : (context) => const LoginScreen()
       },
     );
   }

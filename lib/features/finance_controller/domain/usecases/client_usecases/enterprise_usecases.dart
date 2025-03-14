@@ -1,5 +1,4 @@
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/enterprise_repository.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/repositories/system_users/client_repository.dart';
 
 import '../../entities/enterprise.dart';
 import '../../entities/system_users/client.dart';

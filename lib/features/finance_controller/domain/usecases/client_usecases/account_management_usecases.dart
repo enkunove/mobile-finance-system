@@ -1,8 +1,6 @@
 import 'package:finance_system_controller/features/finance_controller/domain/entities/bank.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/entities/transfer.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/account_repository.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/repositories/system_users/client_repository.dart';
 import '../../entities/account.dart';
 
 class AccountManagementUsecases{

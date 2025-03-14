@@ -14,17 +14,10 @@ class StartScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const Text(
-              'Welcome to the Finance System!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            Image.asset('lib/assets/images/image.jpg'),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Navigate to Registration Screen
                 Navigator.pushNamed(context, '/registration');
               },
               child: const Text('Зарегистрироваться'),
@@ -32,7 +25,6 @@ class StartScreen extends StatelessWidget {
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                // Navigate to Login Screen
                 Navigator.pushNamed(context, '/login');
               },
               child: const Text('Войти'),

@@ -33,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Регистрация')),
+      appBar: AppBar(title: const Text('Вход (анальный)')),
       body: BlocProvider(
         create: (_) => RegisterBloc(
           registerUsecase: InjectionContainer.sl<RegisterUsecase>(),

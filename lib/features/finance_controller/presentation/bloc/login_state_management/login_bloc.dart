@@ -21,7 +21,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         print(loggedInClient);
         emit(LoginSuccess(loggedInClient));
       } else {
-        emit(LoginFailure('Ошибка при логине'));
+        emit(LoginFailure('ошибка'));
       }
     });
   }
