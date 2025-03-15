@@ -11,13 +11,13 @@ class AccountManagementUsecases{
 
   Future<void> createAccount(Client client, Bank bank) async {
     try {
-      await accountRepository.createAccount(client, bank);
+      await accountRepository.createAccount(client, bank.id);
     } on Exception catch (e) {
       print(e);
     }
   }
 
-  Future<bool> closeAccount(String accountId) async {
+  Future<bool> closeAccount(int accountId) async {
     try {
       return await accountRepository.deleteAccount(accountId);
     } on Exception catch (e) {
@@ -30,7 +30,7 @@ class AccountManagementUsecases{
     return await accountRepository.getAccountsForClient(client);
   }
 
-  Future<bool> deposit(String accountId, double amount) async {
+  Future<bool> deposit(int accountId, double amount) async {
     try {
       Account a = await accountRepository.getAccount(accountId);
       double balance = a.balance;
@@ -44,7 +44,7 @@ class AccountManagementUsecases{
     }
   }
 
-  Future<bool> withdraw(String accountId, double amount) async{
+  Future<bool> withdraw(int accountId, double amount) async{
     try {
       Account a = await accountRepository.getAccount(accountId);
       double balance = a.balance;
@@ -77,12 +77,12 @@ class AccountManagementUsecases{
       return false;
     }
   }*/
-  Future<bool> freezeAccount(String accountId) async {
+  Future<bool> freezeAccount(int accountId) async {
     Account a = await accountRepository.getAccount(accountId);
     a.isFrozen = true;
     return await accountRepository.updateAccount(accountId, a);
   }
-  Future<bool> blockAccount(String accountId) async {
+  Future<bool> blockAccount(int accountId) async {
     Account a = await accountRepository.getAccount(accountId);
     a.isBlocked = true;
     return await accountRepository.updateAccount(accountId, a);

@@ -3,6 +3,7 @@ import 'package:finance_system_controller/features/finance_controller/data/repos
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/account_repository.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/client_usecases/registration_usecase.dart';
 import 'package:get_it/get_it.dart';
+import '../features/finance_controller/domain/usecases/admin_usecases/banks_management_usecases.dart';
 import '../features/finance_controller/data/datasources/accounts_datasourse.dart';
 import '../features/finance_controller/data/repositories/system_users/client_repository_impl.dart';
 import '../features/finance_controller/domain/entities/system_users/client.dart';
@@ -33,16 +34,16 @@ class InjectionContainer {
     ));
 
     sl.registerFactory<RegisterUsecase>(() => RegisterUsecase(sl()));
+    sl.registerLazySingleton<LoginUsecase>(() => LoginUsecase(sl()));
+    sl.registerLazySingleton<AccountManagementUsecases>(() => AccountManagementUsecases(sl(), sl()));
+    sl.registerLazySingleton<BankManagementUsecases>(() => BankManagementUsecases(sl()));
 
     sl.registerFactory<RegisterBloc>(() => RegisterBloc(
       registerUsecase: sl<RegisterUsecase>(),
       loginUsecase: sl<LoginUsecase>(),
     ));
-
     sl.registerFactory<LoginBloc>(() => LoginBloc(sl()));
 
-    sl.registerLazySingleton<LoginUsecase>(() => LoginUsecase(sl()));
 
-    sl.registerLazySingleton<AccountManagementUsecases>(() => AccountManagementUsecases(sl(), sl()));
   }
 }

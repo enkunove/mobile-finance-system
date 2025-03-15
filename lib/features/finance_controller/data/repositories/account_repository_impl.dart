@@ -16,11 +16,10 @@ class AccountRepositoryImpl implements AccountRepository{
 
 
   @override
-  Future<void> createAccount(Client client, Bank bank) async {
-    BankModel bankModel = BankModel(id: bank.id, type: bank.type, name: bank.name, pin: bank.pin, bic: bank.bic, address: bank.address);
+  Future<void> createAccount(Client client, int bankId) async {
     AccountModel accountModel = AccountModel(
       clientId: client.idNumber,
-      bankModel: bankModel
+      bankId : bankId
     );
     await accountsDatasource.insertAccount(accountModel.toMap());
   }
@@ -33,27 +32,29 @@ class AccountRepositoryImpl implements AccountRepository{
     });
     final List<Account> result = [];
     for(var m in models){
-      result.add(Account(clientId: m.clientId, balance:  m.balance, accountId: m.accountId, isBlocked: m.isBlocked, isFrozen: m.isFrozen, bank: m.bank));
+      result.add(Account(clientId: m.clientId, balance:  m.balance, accountId: m.accountId, isBlocked: m.isBlocked, isFrozen: m.isFrozen, bankId: m.bankId));
     }
     return result;
   }
 
   @override
-  Future<bool> deleteAccount(String accountId) {
+  Future<bool> deleteAccount(int accountId) {
     // TODO: implement deleteAccount
     throw UnimplementedError();
   }
 
   @override
-  Future<Account> getAccount(String accountId) {
-    // TODO: implement getAccount
-    throw UnimplementedError();
+  Future<Account> getAccount(int accountId) async {
+    final map = await accountsDatasource.getAccountById(accountId);
+    final model = AccountModel.fromMap(map);
+    return Account(clientId: model.clientId, bankId: model.bankId, balance: model.balance, accountId: model.accountId, isFrozen: model.isFrozen, isBlocked: model.isBlocked);
   }
 
   @override
-  Future<bool> updateAccount(String accountId, Account account) {
-    // TODO: implement updateAccount
-    throw UnimplementedError();
+  Future<bool> updateAccount(int accountId, Account account) async {
+    final AccountModel model = AccountModel(clientId: account.clientId, balance:  account.balance, accountId: account.accountId, isBlocked: account.isBlocked, isFrozen: account.isFrozen, bankId: account.bankId);
+    await accountsDatasource.updateAccount(model);
+    return true;
   }
 
 }

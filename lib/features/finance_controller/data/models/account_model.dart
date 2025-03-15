@@ -6,7 +6,7 @@ class AccountModel extends Account{
   int accountId;
   @override
   final int clientId;
-  final BankModel bankModel;
+  final int bankId;
   @override
   double balance;
   @override
@@ -17,16 +17,16 @@ class AccountModel extends Account{
   AccountModel({
     this.accountId = 0,
     required this.clientId,
-    required this.bankModel,
+    required this.bankId,
     this.balance = 0.0,
     this.isBlocked = false,
     this.isFrozen = false,
-  }) : super(clientId: clientId, bank: bankModel);
+  }) : super(clientId: clientId, bankId: bankId);
 
   Map<String, dynamic> toMap() {
     return {
       'clientId': clientId,
-      'bank': bankModel.toMap(),
+      'bankId': bankId,
       'balance': balance,
       'isBlocked': isBlocked ? 1 : 0,
       'isFrozen': isFrozen ? 1 : 0,
@@ -37,7 +37,7 @@ class AccountModel extends Account{
     return AccountModel(
       accountId: map['accountId'],
       clientId: map['clientId'],
-      bankModel: map['bank'],
+      bankId: map['bankId'],
       balance: map['balance'],
       isBlocked: map['isBlocked'] == 1,
       isFrozen: map['isFrozen'] == 1,

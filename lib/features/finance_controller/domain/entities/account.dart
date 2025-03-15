@@ -3,14 +3,14 @@ import 'bank.dart';
 class Account {
   int accountId = 0;
   final int clientId;
-  final Bank bank;
+  final int bankId;
   double balance;
   bool isBlocked = false;
   bool isFrozen = false;
 
   Account({
     required this.clientId,
-    required this.bank,
+    required this.bankId,
     this.balance = 0.0,
     this.accountId = 0,
     this.isBlocked = false,

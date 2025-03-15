@@ -23,8 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _register(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      final String username =
-        _usernameController.text;
+      final String username = _usernameController.text;
       final String password = _passwordController.text;
       context.read<LoginBloc>().add(LoginClient(username, password));
     }
@@ -33,63 +32,79 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Вход (анальный)')),
+      appBar: AppBar(
+        title: const Text('Вход'),
+        backgroundColor: Colors.blueAccent,
+        centerTitle: true,
+      ),
       body: BlocProvider(
         create: (_) => RegisterBloc(
           registerUsecase: InjectionContainer.sl<RegisterUsecase>(),
           loginUsecase: InjectionContainer.sl<LoginUsecase>(),
-        ),        child: Builder(
-        builder: (context) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  TextFormField(
-                    controller: _usernameController,
-                    decoration: const InputDecoration(labelText: 'Логин'),
-                    validator: (value) => value!.isEmpty ? 'Введите логин' : null,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Пароль'),
-                    obscureText: true,
-                    validator: (value) => value!.isEmpty ? 'Введите пароль' : null,
-                  ),
-                  const SizedBox(height: 20),
-                  BlocConsumer<LoginBloc, LoginState>(
-                    listener: (context, state) {
-                      if (state is LoginSuccess) {
-                        InjectionContainer.sl.unregister<Client>();
-                        InjectionContainer.sl.registerSingleton<Client>(state.client);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => const ClientMainScreen()),
+        ),
+        child: Builder(
+          builder: (context) {
+            return Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _usernameController,
+                      decoration: const InputDecoration(labelText: 'Логин'),
+                      validator: (value) =>
+                          value!.isEmpty ? 'Введите логин' : null,
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      decoration: const InputDecoration(labelText: 'Пароль'),
+                      obscureText: true,
+                      validator: (value) =>
+                          value!.isEmpty ? 'Введите пароль' : null,
+                    ),
+                    const SizedBox(height: 20),
+                    BlocConsumer<LoginBloc, LoginState>(
+                      listener: (context, state) {
+                        if (state is LoginSuccess) {
+                          InjectionContainer.sl.unregister<Client>();
+                          InjectionContainer.sl
+                              .registerSingleton<Client>(state.client);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const ClientMainScreen()),
+                          );
+                        } else if (state is LoginFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is RegisterLoading) {
+                          return const CircularProgressIndicator();
+                        }
+                        return ElevatedButton(
+                          onPressed: () => _register(context),
+                          style: ElevatedButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 30),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            backgroundColor: Colors.blueAccent,
+                          ),
+                          child: const Text('Войти'),
                         );
-                      } else if (state is LoginFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text(state.message)),
-                        );
-                      }
-
-                    },
-                    builder: (context, state) {
-                      if (state is RegisterLoading) {
-                        return const CircularProgressIndicator();
-                      }
-                      return ElevatedButton(
-                        onPressed: () => _register(context),
-                        child: const Text('Войти'),
-                      );
-                    },
-                  ),
-                ],
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            );
+          },
+        ),
       ),
     );
   }

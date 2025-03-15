@@ -16,18 +16,19 @@ class AccountsDatasource {
     _database = await _initDatabase();
     return _database!;
   }
-  Future<void> _onCreate(Database db, int version) async {
 
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
       CREATE TABLE accounts (
         accountId INTEGER PRIMARY KEY AUTOINCREMENT,
         clientId INTEGER,
+        bankId INTEGER,
         balance REAL DEFAULT 0.0,
         isBlocked INTEGER DEFAULT 0,
         isFrozen INTEGER DEFAULT 0,
-        FOREIGN KEY (clientId) REFERENCES clients (id) ON DELETE CASCADE
-      )
-    ''');
+        FOREIGN KEY (bankId) REFERENCES banks (id) ON DELETE CASCADE,
+        FOREIGN KEY (clientId) REFERENCES clients (idNumber) ON DELETE CASCADE
+      );''');
   }
 
   Future<Database> _initDatabase() async {
@@ -41,7 +42,9 @@ class AccountsDatasource {
 
   Future<int> insertAccount(Map<String, dynamic> accountData) async {
     final db = await database;
-    return await db.insert('accounts', accountData, conflictAlgorithm: ConflictAlgorithm.ignore);
+    print(accountData);
+    return await db.insert('accounts', accountData,
+        conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
   Future<List<Map<String, dynamic>>> getAccounts() async {
@@ -49,9 +52,17 @@ class AccountsDatasource {
     return await db.query('accounts');
   }
 
+  Future<Map<String, dynamic>> getAccountById(int id) async{
+    final db = await database;
+    final maps = await db.query('accounts', where: 'accountId = ?', whereArgs: [id]);
+    final ac = maps[0];
+    return ac;
+  }
+
   Future<List<Map<String, dynamic>>> getAccountsForClient(int clientId) async {
     final db = await database;
-    return await db.query('accounts', where: 'clientId = ?', whereArgs: [clientId]);
+    return await db
+        .query('accounts', where: 'clientId = ?', whereArgs: [clientId]);
   }
 
   Future<int> deleteAccount(String id) async {
