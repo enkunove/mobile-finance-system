@@ -40,6 +40,10 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
             onPressed: () => Navigator.pushNamed(context, "/client_main/profile"),
             icon: const Icon(Icons.settings),
           ),
+          IconButton(
+            onPressed: () => Navigator.pushNamed(context, "/client_main/transfers"),
+            icon: const Icon(Icons.history),
+          ),
         ],
       ),
       body: Padding(

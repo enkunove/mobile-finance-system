@@ -1,22 +1,22 @@
-import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/transfer.dart';
 
 class TransferModel extends Transfer{
   @override
-  final dynamic source;
+  final int source;
   @override
-  final dynamic target;
+  final int target;
   @override
   final double amount;
   @override
-  DateTime dateTime;
+  final DateTime dateTime;
 
-  TransferModel(this.source, this.target, this.amount) : dateTime = DateTime.now(), super(source, target, amount);
+  TransferModel(this.source, this.target, this.amount, this.dateTime) : super(source, target, amount, dateTime);
 
   Map<String, dynamic> toMap() {
     return {
-      'source': source is Client ? source.username : source.accountId,
-      'target': target is Client ? target.username : target.accountId,
+      'source': source,
+      'target': target,
+      'amount' : amount,
       'dateTime': dateTime.toIso8601String(),
     };
   }
@@ -25,7 +25,8 @@ class TransferModel extends Transfer{
     return TransferModel(
       map['source'],
       map['target'],
-      map['amount']
-    )..dateTime = DateTime.parse(map['dateTime']);
+      map['amount'],
+      DateTime.parse(map['dateTime']
+    ));
   }
 }

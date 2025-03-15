@@ -1,9 +1,9 @@
 
 class Transfer{
-  final dynamic source;
-  final dynamic target;
+  final int source;
+  final int target;
   final double amount;
-  DateTime dateTime;
+  final DateTime dateTime;
 
-  Transfer(this.source, this.target, this.amount) : dateTime = DateTime.now();
+  Transfer(this.source, this.target, this.amount, this.dateTime);
 }

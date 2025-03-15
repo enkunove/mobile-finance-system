@@ -21,7 +21,6 @@ class StartScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Spacer(),
-
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
                 child: Image.asset(
@@ -37,14 +36,18 @@ class StartScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/registration');
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   backgroundColor: Colors.blueAccent,
                   textStyle: const TextStyle(fontSize: 16),
                 ),
-                child: const Text('Зарегистрироваться', style: TextStyle(color: Colors.black),),
+                child: const Text(
+                  'Зарегистрироваться',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               const SizedBox(height: 10),
               ElevatedButton(
@@ -52,21 +55,30 @@ class StartScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/login');
                 },
                 style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   backgroundColor: Colors.blueAccent,
                   textStyle: const TextStyle(fontSize: 16),
                 ),
-                child: const Text('Войти', style: TextStyle(color: Colors.black),),
+                child: const Text(
+                  'Войти',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               const Spacer(),
-              ElevatedButton(onPressed: () async {
-                await deleteDatabase(join(await getDatabasesPath(), 'banks_database.db'));
-                await deleteDatabase(join(await getDatabasesPath(), 'accounts_database.db'));
-                await deleteDatabase(join(await getDatabasesPath(), 'clients_database.db'));
-              }, child: const Text("очистить данные"))
+              ElevatedButton(
+                  onPressed: () async {
+                    await deleteDatabase(
+                        join(await getDatabasesPath(), 'banks_database.db'));
+                    await deleteDatabase(
+                        join(await getDatabasesPath(), 'accounts_database.db'));
+                    await deleteDatabase(
+                        join(await getDatabasesPath(), 'client_database.db'));
+                  },
+                  child: const Text("очистить данные"))
             ],
           ),
         ),

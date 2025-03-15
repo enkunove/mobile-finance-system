@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:finance_system_controller/features/finance_controller/data/models/account_model.dart';
+import 'package:finance_system_controller/features/finance_controller/data/models/transfer_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -29,16 +30,31 @@ class AccountsDatasource {
         FOREIGN KEY (bankId) REFERENCES banks (id) ON DELETE CASCADE,
         FOREIGN KEY (clientId) REFERENCES clients (idNumber) ON DELETE CASCADE
       );''');
+
+    await db.execute('''
+      CREATE TABLE transfers (
+        transferId INTEGER PRIMARY KEY AUTOINCREMENT,
+        source INTEGER,
+        target INTEGER,
+        amount REAL DEFAULT 0.0,
+        dateTime TEXT
+      );''');
   }
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'accounts_database.db');
     return await openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: _onCreate,
+      onUpgrade: (Database db, int oldVersion, int newVersion) async {
+        await db.execute('DROP TABLE IF EXISTS transfers');
+        await db.execute('DROP TABLE IF EXISTS accounts');
+        await _onCreate(db, newVersion);
+      },
     );
   }
+
 
   Future<int> insertAccount(Map<String, dynamic> accountData) async {
     final db = await database;
@@ -52,7 +68,7 @@ class AccountsDatasource {
     return await db.query('accounts');
   }
 
-  Future<Map<String, dynamic>> getAccountById(int id) async{
+  Future<Map<String, dynamic>?> getAccountById(int id) async{
     final db = await database;
     final maps = await db.query('accounts', where: 'accountId = ?', whereArgs: [id]);
     final ac = maps[0];
@@ -79,4 +95,28 @@ class AccountsDatasource {
       whereArgs: [account.accountId],
     );
   }
+
+  Future<void> addTransfer(TransferModel model) async {
+    final map = model.toMap();
+    final db = await database;
+    await db.insert('transfers', map,
+        conflictAlgorithm: ConflictAlgorithm.ignore);
+    return Future.value();
+  }
+
+  Future<List<Map<String, dynamic>>> getAllTransfersForClient(int clientId) async {
+    final db = await database;
+    final accountsMaps = await db.query('accounts', where: 'clientId = ?', whereArgs: [clientId]);
+    final List<int> accountIds = accountsMaps.map((account) => account['accountId'] as int).toList();
+    if (accountIds.isEmpty) {
+      return [];
+    }
+    final transfers = await db.query(
+      'transfers',
+      where: 'source IN (${List.filled(accountIds.length, '?').join(', ')}) OR target IN (${List.filled(accountIds.length, '?').join(', ')})',
+      whereArgs: [...accountIds, ...accountIds],
+    );
+    return transfers;
+  }
+
 }

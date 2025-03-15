@@ -1,3 +1,4 @@
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/transfer_log_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/registration_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/start_screen.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ class Application extends StatelessWidget {
         "/login" : (context) => const LoginScreen(),
         "/client_main" : (context) => const ClientMainScreen(),
         '/client_main/profile' : (context) => const ProfileScreen(),
+        '/client_main/transfers' : (context) => const TransferLogScreen(),
+
       },
     );
   }

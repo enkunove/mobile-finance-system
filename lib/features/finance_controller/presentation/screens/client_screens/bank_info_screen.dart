@@ -8,6 +8,7 @@ import '../../../domain/entities/system_users/client.dart';
 import '../../../domain/usecases/client_usecases/account_management_usecases.dart';
 import '../../bloc/bank_info_state_management/bank_info_bloc.dart';
 import '../../widgets/account_widget.dart';
+import '../../widgets/transfer_dialog_widget.dart';
 
 class BankInfoScreen extends StatefulWidget {
   final Bank bank;
@@ -166,26 +167,38 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
           icon: Icons.arrow_downward,
           label: "Депозит",
           context: context,
-          onPressed: () {
-            // Deposit logic
+          onPressed: () async {
+            await _usecase.deposit(account!.accountId, 50);
+            context.read<BankInfoBloc>().add(FetchBankInfo());
           },
         ),
         _buildActionButton(
           icon: Icons.arrow_upward,
           label: "Вывод",
           context: context,
-
-          onPressed: () {
-            // Withdrawal logic
+          onPressed: () async {
+            await _usecase.withdraw(account!.accountId, 50);
+            context.read<BankInfoBloc>().add(FetchBankInfo());
           },
         ),
         _buildActionButton(
           icon: Icons.send,
           label: "Перевод",
           context: context,
-
-          onPressed: () {
-            // Transfer logic
+          onPressed: () async {
+            if (account!.balance > 0) {
+              await showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return TransferDialog(balance: account.balance, id: account.accountId,);
+                },
+              );
+              context.read<BankInfoBloc>().add(FetchBankInfo());
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Отсутствуют средства для перевода')),
+              );
+            }
           },
         ),
         _buildActionButton(

@@ -1,6 +1,8 @@
 import 'package:finance_system_controller/features/finance_controller/data/datasources/clients_datasource.dart';
+import 'package:finance_system_controller/features/finance_controller/data/models/transfer_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
+import 'package:finance_system_controller/features/finance_controller/domain/entities/transfer.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/account_repository.dart';
 
 import '../datasources/accounts_datasourse.dart';
@@ -42,10 +44,20 @@ class AccountRepositoryImpl implements AccountRepository{
   }
 
   @override
-  Future<Account> getAccount(int accountId) async {
+  Future<Account?> getAccount(int accountId) async {
     final map = await accountsDatasource.getAccountById(accountId);
-    final model = AccountModel.fromMap(map);
-    return Account(clientId: model.clientId, bankId: model.bankId, balance: model.balance, accountId: model.accountId, isFrozen: model.isFrozen, isBlocked: model.isBlocked);
+    if (map != null ) {
+      final model = AccountModel.fromMap(map);
+      return Account(clientId: model.clientId,
+          bankId: model.bankId,
+          balance: model.balance,
+          accountId: model.accountId,
+          isFrozen: model.isFrozen,
+          isBlocked: model.isBlocked);
+    }
+    else {
+      return null;
+    }
   }
 
   @override
@@ -55,4 +67,26 @@ class AccountRepositoryImpl implements AccountRepository{
     return true;
   }
 
+  @override
+  Future<void> actTransfer(Account from, Account to, Transfer transfer) async{
+    final TransferModel transferModel = TransferModel(transfer.source, transfer.target, transfer.amount, transfer.dateTime);
+    final AccountModel fromModel = AccountModel(clientId: from.clientId, balance:  from.balance, accountId: from.accountId, isBlocked: from.isBlocked, isFrozen: from.isFrozen, bankId: from.bankId);
+    final AccountModel toModel = AccountModel(clientId: to.clientId, balance:  to.balance, accountId: to.accountId, isBlocked: to.isBlocked, isFrozen: to.isFrozen, bankId: to.bankId);
+    await accountsDatasource.updateAccount(fromModel);
+    await accountsDatasource.updateAccount(toModel);
+    await accountsDatasource.addTransfer(transferModel);
+  }
+
+  @override
+  Future<List<Transfer>> getAllTransferredForClient(int clientId) async {
+    final maps = await accountsDatasource.getAllTransfersForClient(clientId);
+    final models = List.generate(maps.length, (i) {
+      return TransferModel.fromMap(maps[i]);
+    });
+    final List<Transfer> result = [];
+    for (var m in models) {
+      result.add(Transfer(m.source, m.target, m.amount, m.dateTime));
+    }
+    return result;
+  }
 }
