@@ -17,21 +17,29 @@ class BankRepositoryImpl implements BankRepository{
   }
 
   @override
-  Future<bool> deleteBank(String id) {
+  Future<bool> deleteBank(int id) {
     // TODO: implement deleteBank
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Bank>> getAllBanks() {
-    // TODO: implement getAllBanks
-    throw UnimplementedError();
+  Future<List<Bank>> getAllBanks() async {
+    final maps = await banksDatasource.getBanks();
+    final models =  List.generate(maps.length, (i) {
+      return BankModel.fromMap(maps[i]);
+    });
+    final List<Bank> result = [];
+    for(var m in models){
+      result.add(Bank(id: m.id, type: m.type, pin: m.pin, address: m.address, name: m.name, bic: m.bic));
+    }
+    return result;
   }
 
   @override
-  Future<Bank?> getBankById(String id) {
-    // TODO: implement getBankById
-    throw UnimplementedError();
+  Future<Bank> getBankById(int id) async  {
+    final map = await banksDatasource.getBankById(id);
+    final model = BankModel.fromMap(map);
+    return model;
   }
 
   @override

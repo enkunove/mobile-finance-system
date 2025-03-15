@@ -1,4 +1,3 @@
-import 'package:finance_system_controller/features/finance_controller/data/models/bank_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
 
 class AccountModel extends Account{
@@ -6,6 +5,7 @@ class AccountModel extends Account{
   int accountId;
   @override
   final int clientId;
+  @override
   final int bankId;
   @override
   double balance;

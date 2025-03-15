@@ -79,12 +79,12 @@ class AccountManagementUsecases{
   }*/
   Future<bool> freezeAccount(int accountId) async {
     Account a = await accountRepository.getAccount(accountId);
-    a.isFrozen = true;
+    a.isFrozen = !a.isFrozen;
     return await accountRepository.updateAccount(accountId, a);
   }
   Future<bool> blockAccount(int accountId) async {
     Account a = await accountRepository.getAccount(accountId);
-    a.isBlocked = true;
+    a.isBlocked = !a.isBlocked;
     return await accountRepository.updateAccount(accountId, a);
   }
 }

@@ -5,10 +5,14 @@ class BankManagementUsecases{
 
   final BankRepository bankRepository;
 
-  BankManagementUsecases({required this.bankRepository});
+  BankManagementUsecases(this.bankRepository);
 
   Future<void> createBank(int id, String type, String pin, String address, String name, String bic) async{
     Bank bank = Bank(id: id, type: type, pin: pin, address: address, name: name, bic: bic);
     await bankRepository.addBank(bank);
+  }
+
+  Future<List<Bank>> getAllBanks() async{
+    return await bankRepository.getAllBanks();
   }
 }

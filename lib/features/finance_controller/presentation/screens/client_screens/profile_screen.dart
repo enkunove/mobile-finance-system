@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../../../../../core/injection_container.dart';
-import '../../../domain/entities/bank.dart';
 import '../../../domain/entities/system_users/client.dart';
-import '../../../domain/usecases/client_usecases/account_management_usecases.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

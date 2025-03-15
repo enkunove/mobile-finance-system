@@ -1,7 +1,6 @@
 import 'package:finance_system_controller/core/injection_container.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/usecases/client_usecases/account_management_usecases.dart';
-import 'package:finance_system_controller/features/finance_controller/presentation/widgets/account_widget.dart';
+import 'package:finance_system_controller/features/finance_controller/domain/usecases/admin_usecases/banks_management_usecases.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/widgets/bank_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:get_it/get_it.dart';
@@ -17,37 +16,17 @@ class ClientMainScreen extends StatefulWidget {
 
 class _ClientMainScreenState extends State<ClientMainScreen> {
   late final Client _client;
-  late final AccountManagementUsecases _usecase;
+  late final BankManagementUsecases _usecase;
 
   @override
   void initState() {
     super.initState();
     _client = GetIt.instance<Client>();
-    _usecase = InjectionContainer.sl<AccountManagementUsecases>();
+    _usecase = InjectionContainer.sl<BankManagementUsecases>();
   }
 
-  void _test() async {
-    Bank bank = Bank(
-      id: 1,
-      type: "type",
-      pin: "pin",
-      address: "address",
-      name: "name",
-      bic: "bic",
-    );
-    final usecase = InjectionContainer.sl<AccountManagementUsecases>();
-    await usecase.createAccount(_client, bank);
-    setState(() {});
-  }
-
-  void _test2() async {
-    final usecase = InjectionContainer.sl<AccountManagementUsecases>();
-    await usecase.deposit(2, 100);
-    setState(() {});
-  }
-
-  Future<List<Account>> _fetchAccounts() async {
-    return await _usecase.getAccountsForClient(_client);
+  Future<List<Bank>> _fetchAccounts() async {
+    return await _usecase.getAllBanks();
   }
 
   @override
@@ -55,7 +34,7 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
-        title: Text("Client Dashboard"),
+        title: Text(_client.username),
         actions: [
           IconButton(
             onPressed: () => Navigator.pushNamed(context, "/client_main/profile"),
@@ -69,7 +48,7 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Your Accounts",
+              "Доступные банки",
               style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -78,42 +57,28 @@ class _ClientMainScreenState extends State<ClientMainScreen> {
             ),
             const SizedBox(height: 16),
             Expanded(
-              child: FutureBuilder<List<Account>>(
+              child: FutureBuilder<List<Bank>>(
                 future: _fetchAccounts(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Center(child: Text("Error: ${snapshot.error}"));
+                    return Center(child: Text("ошибка: ${snapshot.error}"));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text("No accounts available"));
+                    return const Center(child: Text("нет доступных банков"));
                   } else {
                     return ListView.builder(
                       itemCount: snapshot.data!.length,
                       itemBuilder: (context, index) {
                         final account = snapshot.data![index];
-                        return AccountWidget(account: account);
+                        return BankWidget(bank: account);
                       },
                     );
                   }
                 },
               ),
             ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: _test,
-                  child: const Text("Create Account"),
-                ),
-                ElevatedButton(
-                  onPressed: _test2,
-                  child: const Text("Deposit"),
-                ),
-              ],
-            ),
-          ],
+            ]
         ),
       ),
     );

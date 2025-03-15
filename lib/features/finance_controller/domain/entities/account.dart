@@ -1,4 +1,3 @@
-import 'bank.dart';
 
 class Account {
   int accountId = 0;

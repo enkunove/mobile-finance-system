@@ -65,7 +65,7 @@ class AccountsDatasource {
         .query('accounts', where: 'clientId = ?', whereArgs: [clientId]);
   }
 
-  Future<int> deleteAccount(String id) async {
+  Future<int> deleteAccount(int id) async {
     final db = await database;
     return await db.delete('accounts', where: 'accountId = ?', whereArgs: [id]);
   }

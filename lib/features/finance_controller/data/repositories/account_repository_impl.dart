@@ -1,10 +1,8 @@
 import 'package:finance_system_controller/features/finance_controller/data/datasources/clients_datasource.dart';
-import 'package:finance_system_controller/features/finance_controller/data/models/bank_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/account_repository.dart';
 
-import '../../domain/entities/bank.dart';
 import '../datasources/accounts_datasourse.dart';
 import '../models/account_model.dart';
 
@@ -38,9 +36,9 @@ class AccountRepositoryImpl implements AccountRepository{
   }
 
   @override
-  Future<bool> deleteAccount(int accountId) {
-    // TODO: implement deleteAccount
-    throw UnimplementedError();
+  Future<bool> deleteAccount(int accountId) async{
+    await accountsDatasource.deleteAccount(accountId);
+    return true;
   }
 
   @override

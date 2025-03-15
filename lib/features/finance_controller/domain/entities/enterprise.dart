@@ -1,6 +1,5 @@
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 
-import 'bank.dart';
 
 class Enterprise{
   final int id;
@@ -22,4 +21,9 @@ class Enterprise{
         List<Client>? clients,
       })
       : clients = clients ?? [];
+
+  @override
+  String toString() {
+    return "id: $id, type: $type, pin: $pin, address: $address, name: $name, bic: $bic";
+  }
 }

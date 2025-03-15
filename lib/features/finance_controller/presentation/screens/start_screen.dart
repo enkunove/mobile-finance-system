@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});
@@ -18,6 +20,8 @@ class StartScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const Spacer(),
+
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
                 child: Image.asset(
@@ -57,6 +61,12 @@ class StartScreen extends StatelessWidget {
                 ),
                 child: const Text('Войти', style: TextStyle(color: Colors.black),),
               ),
+              const Spacer(),
+              ElevatedButton(onPressed: () async {
+                await deleteDatabase(join(await getDatabasesPath(), 'banks_database.db'));
+                await deleteDatabase(join(await getDatabasesPath(), 'accounts_database.db'));
+                await deleteDatabase(join(await getDatabasesPath(), 'clients_database.db'));
+              }, child: const Text("очистить данные"))
             ],
           ),
         ),

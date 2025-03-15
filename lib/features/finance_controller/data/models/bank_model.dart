@@ -16,7 +16,6 @@ class BankModel extends Bank {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'type': type,
       'name': name,
       'pin': pin,
