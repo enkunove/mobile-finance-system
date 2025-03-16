@@ -14,7 +14,7 @@ class ClientRepositoryImpl implements ClientRepository {
   @override
   Future<bool> register(Client client) async {
     try {
-      ClientModel model = ClientModel(username: client.username, password: client.password, fullName: client.fullName, passportSeriesAndNumber: client.passportSeriesAndNumber, idNumber: client.idNumber, phone: client.phone, email: client.email);
+      ClientModel model = ClientModel(username: client.username, password: client.password, fullName: client.fullName, passportSeriesAndNumber: client.passportSeriesAndNumber, idNumber: client.idNumber, phone: client.phone, email: client.email, isApproved: client.isApproved, role: "Client");
       clientsDatasource.insertClient(model);
       return true;
     } catch (e) {
@@ -23,12 +23,30 @@ class ClientRepositoryImpl implements ClientRepository {
   }
   
   @override
-  Future<Client?> login(String username, String password) async{
+  Future<dynamic> login(String username, String password) async{
     try{
       final model = await clientsDatasource.login(password, username);
-      return model as Client;
+      return model;
     }catch (e){
       return null;
     }
+  }
+
+  @override
+  Future<void> updateClientById(Client client) async {
+    ClientModel model = ClientModel(username: client.username, password: client.password, fullName: client.fullName, passportSeriesAndNumber: client.passportSeriesAndNumber, idNumber: client.idNumber, phone: client.phone, email: client.email, isApproved: client.isApproved, role: "Client");
+    await clientsDatasource.updateClient(model);
+    return Future.value();
+  }
+  @override
+  Future<void> deleteClient(int id) async{
+    await clientsDatasource.deleteClient(id);
+  }
+
+
+  @override
+  Future<List<Client>> getAllRegistrationRequests() async {
+    final list = await clientsDatasource.getUnconfirmedClients();
+    return list;
   }
 }

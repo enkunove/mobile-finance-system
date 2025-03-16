@@ -15,6 +15,7 @@ class Application extends StatelessWidget {
     return MaterialApp(
       title: 'Application',
       theme: ThemeData(
+        primaryColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,

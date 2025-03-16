@@ -75,13 +75,20 @@ class _TransferDialogState extends State<TransferDialog> {
 
               if (targetId != -1) {
                 final target = await _usecase.getAccountById(targetId);
-                if (target != null) {
-                  await _usecase.transfer(
+                if (target != null && widget.id != targetId) {
+                  bool res = await _usecase.transfer(
                       widget.id, targetId, _transferAmount);
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Перевод выполнен')),
-                  );
+                  if (res == true) {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Перевод выполнен')),
+                    );
+                  } else{
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Переводы с неактивного счета невозможны')),
+                    );
+                  }
                 } else {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(

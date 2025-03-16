@@ -9,27 +9,22 @@ class Client extends User {
   String get role => "Client";
   final String fullName;
   final String passportSeriesAndNumber;
-  final int idNumber = 0;
+  final int idNumber;
   final String phone;
   final String email;
-  final List<Account> accounts;
-  final List<Credit> credits;
-  final List<Transfer> transfers;
+  bool isApproved;
 
   Client(super.username, super.password,
       {required this.fullName,
       required this.passportSeriesAndNumber,
+      required this.idNumber,
       required this.phone,
       required this.email,
-      List<Credit>? credits,
-      List<Account>? accounts,
-      List<Transfer>? transfers})
-      : accounts = accounts ?? [],
-        credits = credits ?? [],
-        transfers = transfers ?? [];
+      required this.isApproved,
+      });
 
   @override
   String toString() {
-    return 'Client(username: $username, password: $password, role: $role, fullName: $fullName, passport: $passportSeriesAndNumber, idNumber: $idNumber, phone: $phone, email: $email, credits: $credits, transfers: $transfers, accounts: $accounts)';
+    return 'Client(username: $username, password: $password, role: $role, fullName: $fullName, passport: $passportSeriesAndNumber, idNumber: $idNumber, phone: $phone, email: $email, isApproved: $isApproved)';
   }
 }

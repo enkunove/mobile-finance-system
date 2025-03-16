@@ -8,12 +8,12 @@ final class LoginInitial extends LoginState {}
 class LoginLoading extends LoginState {}
 
 class LoginSuccess extends LoginState {
-  final Client client;
+  final dynamic user;
 
-  LoginSuccess(this.client);
+  LoginSuccess(this.user);
 
   @override
-  List<Object> get props => [client];
+  List<Object> get props => [user];
 }
 
 class LoginFailure extends LoginState {

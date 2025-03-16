@@ -37,28 +37,37 @@ class ClientsDatasource {
         idNumber INTEGER PRIMARY KEY AUTOINCREMENT,
         phone TEXT,
         email TEXT,
-        accounts TEXT,
-        credits TEXT,
-        transfers TEXT
+        isApproved INTEGER,
+        role TEXT
       )
     ''');
   }
 
   Future<int> insertClient(ClientModel client) async {
     final db = await database;
+    print(client);
     return await db.insert('clients', client.toMap());
   }
 
-  Future<ClientModel> login(String password, String username) async{
+  Future<dynamic> login(String password, String username) async{
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('clients', where: 'username = ? AND password = ?', whereArgs: [username, password]);
-    final clientmodel = ClientModel.fromMap(maps[0]);
-    return clientmodel;
+    print(maps[0]);
+    return maps[0];
   }
 
   Future<List<ClientModel>> getClients() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('clients');
+    return List.generate(maps.length, (i) {
+      return ClientModel.fromMap(maps[i]);
+    });
+  }
+
+  Future<List<ClientModel>> getUnconfirmedClients() async {
+    final db = await database;
+    final List<Map<String, dynamic>> maps = await db.query('clients', where: 'isApproved = ?', whereArgs: [0]);
+    print(maps);
     return List.generate(maps.length, (i) {
       return ClientModel.fromMap(maps[i]);
     });
@@ -71,13 +80,14 @@ class ClientsDatasource {
     return clientmodel;
   }
 
-  Future<int> deleteClient(String id) async {
+  Future<int> deleteClient(int id) async {
     final db = await database;
     return await db.delete('clients', where: 'idNumber = ?', whereArgs: [id]);
   }
 
   Future<int> updateClient(ClientModel client) async {
     final db = await database;
+    print(client);
     return await db.update(
       'clients',
       client.toMap(),

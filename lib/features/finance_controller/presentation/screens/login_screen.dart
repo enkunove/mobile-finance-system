@@ -1,11 +1,18 @@
+import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/manager.dart';
+import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/operator.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/login_state_management/login_bloc.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/await_confirmation_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/client_main_screen.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/manager_main_screen.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/registration_confirmer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/core/injection_container.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/registration_state_management/register_bloc.dart';
 
+import '../../data/models/system_users/manager_model.dart';
+import '../../data/models/system_users/operator_model.dart';
 import '../../domain/usecases/client_usecases/registration_usecase.dart';
 import '../../domain/usecases/login.dart';
 
@@ -67,14 +74,45 @@ class _LoginScreenState extends State<LoginScreen> {
                     BlocConsumer<LoginBloc, LoginState>(
                       listener: (context, state) {
                         if (state is LoginSuccess) {
-                          InjectionContainer.sl.unregister<Client>();
-                          InjectionContainer.sl
-                              .registerSingleton<Client>(state.client);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => const ClientMainScreen()),
-                          );
+                          if (state.user is Client) {
+                            InjectionContainer.sl.unregister<Client>();
+                            InjectionContainer.sl
+                                .registerSingleton<Client>(state.user);
+                            if (state.user.isApproved == false) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) =>
+                                        const AwaitConfirmationScreen()),
+                              );
+                            } else {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const ClientMainScreen()),
+                              );
+                            }
+                          }
+                          if (state.user is ManagerModel){
+                            InjectionContainer.sl.unregister<Manager>();
+                            InjectionContainer.sl
+                                .registerSingleton<Manager>(state.user);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const ManagerMainScreen()),
+                            );
+                          }
+                          if (state.user is OperatorModel){
+                            InjectionContainer.sl.unregister<Manager>();
+                            InjectionContainer.sl
+                                .registerSingleton<Manager>(state.user);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const ManagerMainScreen()),
+                            );
+                          }
                         } else if (state is LoginFailure) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(state.message)),

@@ -15,11 +15,9 @@ class ClientModel extends Client {
   @override
   final String email;
   @override
-  final List<AccountModel> accounts;
-  @override
-  final List<CreditModel> credits;
-  @override
-  final List<TransferModel> transfers;
+  bool isApproved;
+  final String role;
+
 
   ClientModel({
     required String username,
@@ -29,17 +27,17 @@ class ClientModel extends Client {
     required this.phone,
     this.idNumber = 0,
     required this.email,
-    List<AccountModel>? accounts,
-    List<CreditModel>? credits,
-    List<TransferModel>? transfers,
-  }) : accounts = accounts ?? [],
-        credits = credits ?? [],
-        transfers = transfers ?? [],
+    required this.isApproved,
+    required this.role
+  }) :
         super(username, password,
           fullName: fullName,
           passportSeriesAndNumber: passportSeriesAndNumber,
+          idNumber: idNumber,
           phone: phone,
-          email: email);
+          email: email,
+          isApproved: isApproved,
+      );
 
   Map<String, dynamic> toMap() {
     return {
@@ -49,37 +47,23 @@ class ClientModel extends Client {
       'passportSeriesAndNumber': passportSeriesAndNumber,
       'phone': phone,
       'email': email,
-      'accounts': accounts.isEmpty ? null : accounts.map((a) => a.toMap()).toList(),
-      'credits': credits.isEmpty ? null : credits.map((c) => c.toMap()).toList(),
-      'transfers': transfers.isEmpty ? null : transfers.map((t) => t.toMap()).toList(),
+      'isApproved' : isApproved? 1: 0,
+      'role' : role
     };
   }
 
 
   factory ClientModel.fromMap(Map<String, dynamic> map) {
     return ClientModel(
-      username: map['username'],  // извлекаем username из Map
-      password: map['password'],  // извлекаем password
+      username: map['username'],
+      password: map['password'],
       fullName: map['fullName'],
       passportSeriesAndNumber: map['passportSeriesAndNumber'],
       idNumber: map['idNumber'],
       phone: map['phone'],
       email: map['email'],
-      accounts: map['accounts'] != null
-          ? (map['accounts'] as List)
-          .map((a) => AccountModel.fromMap(a))
-          .toList()
-          : [],  // If null, return an empty list
-      credits: map['credits'] != null
-          ? (map['credits'] as List)
-          .map((c) => CreditModel.fromMap(c))
-          .toList()
-          : [],  // If null, return an empty list
-      transfers: map['transfers'] != null
-          ? (map['transfers'] as List)
-          .map((t) => TransferModel.fromMap(t))
-          .toList()
-          : [],  // If null, return an empty list
+      isApproved: map['isApproved'] == 1,
+      role: map['role']
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:finance_system_controller/features/finance_controller/presentation/widgets/bank_info_header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -45,7 +46,7 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              _buildBankHeader(),
+              BankInfoHeader(bank: widget.bank),
               const SizedBox(height: 20),
               Expanded(
                 child: BlocBuilder<BankInfoBloc, BankInfoState>(
@@ -58,9 +59,8 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              AccountWidget(account: state.account!),
+                              AccountWidget(account: state.account!, buildContext: context,),
                               const SizedBox(height: 20),
-                              _buildActionButtons(state.account, context),
                             ],
                           ),
                         );
@@ -108,149 +108,6 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildBankHeader() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-      decoration: BoxDecoration(
-        color: Colors.blueAccent.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.account_balance, size: 40, color: Colors.blue),
-              const SizedBox(width: 15),
-              Text(
-                widget.bank.name,
-                style: const TextStyle(
-                    fontSize: 26, fontWeight: FontWeight.bold, color: Colors.blue),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          // Additional bank information:
-          Text(
-            "Тип: ${widget.bank.type}",
-            style: const TextStyle(fontSize: 16),
-          ),
-          Text(
-            "BIC: ${widget.bank.bic}",
-            style: const TextStyle(fontSize: 16),
-          ),
-          Text(
-            "PIN: ${widget.bank.pin}",
-            style: const TextStyle(fontSize: 16),
-          ),
-          Text(
-            "Юридический адрес: ${widget.bank.address}",
-            style: const TextStyle(fontSize: 16),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButtons(Account? account, BuildContext context) {
-    return Wrap(
-      spacing: 12,
-      runSpacing: 12,
-      alignment: WrapAlignment.center,
-      children: [
-        _buildActionButton(
-          icon: Icons.arrow_downward,
-          label: "Депозит",
-          context: context,
-          onPressed: () async {
-            await _usecase.deposit(account!.accountId, 50);
-            context.read<BankInfoBloc>().add(FetchBankInfo());
-          },
-        ),
-        _buildActionButton(
-          icon: Icons.arrow_upward,
-          label: "Вывод",
-          context: context,
-          onPressed: () async {
-            await _usecase.withdraw(account!.accountId, 50);
-            context.read<BankInfoBloc>().add(FetchBankInfo());
-          },
-        ),
-        _buildActionButton(
-          icon: Icons.send,
-          label: "Перевод",
-          context: context,
-          onPressed: () async {
-            if (account!.balance > 0) {
-              await showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return TransferDialog(balance: account.balance, id: account.accountId,);
-                },
-              );
-              context.read<BankInfoBloc>().add(FetchBankInfo());
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Отсутствуют средства для перевода')),
-              );
-            }
-          },
-        ),
-        _buildActionButton(
-          icon: Icons.block,
-          label: "Блокировка/разблокировка",
-          context: context,
-          onPressed: () async {
-            await _usecase.blockAccount(account!.accountId);
-            context.read<BankInfoBloc>().add(FetchBankInfo());
-          },
-        ),
-        _buildActionButton(
-          icon: Icons.ac_unit,
-          label: "Заморозка/разморозка",
-          context: context,
-          onPressed: () async {
-            await _usecase.freezeAccount(account!.accountId);
-            context.read<BankInfoBloc>().add(FetchBankInfo());
-          },
-        ),
-        _buildActionButton(
-          icon: Icons.close,
-          label: "Закрыть счет",
-          context: context,
-          onPressed: () async {
-            await _usecase.closeAccount(account!.accountId);
-            context.read<BankInfoBloc>().add(FetchBankInfo());
-          },
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActionButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-    required BuildContext context,
-  }) {
-    return Builder(
-        builder: (context) => ElevatedButton.icon(
-      onPressed: onPressed,
-      icon: Icon(icon, size: 20),
-      label: Text(label),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),)
     );
   }
 }

@@ -1,6 +1,7 @@
 
 import 'package:finance_system_controller/core/application.dart';
 import 'package:finance_system_controller/features/finance_controller/data/datasources/banks_datasource.dart';
+import 'package:finance_system_controller/features/finance_controller/domain/usecases/admin_usecases/initializer_usecase.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/login_state_management/login_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +13,8 @@ void main() async {
   await InjectionContainer.init();
   WidgetsFlutterBinding.ensureInitialized();
 
-  await InjectionContainer.sl<BanksDatasource>().initBanks();
+  InitializerUsecase usecase = InitializerUsecase();
+  await usecase.initializeApplication();
 
   runApp(
     MultiProvider(

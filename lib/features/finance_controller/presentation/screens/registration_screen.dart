@@ -1,3 +1,4 @@
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/await_confirmation_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/client_main_screen.dart';
@@ -30,8 +31,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         _passwordController.text,
         fullName: _fullNameController.text,
         passportSeriesAndNumber: _passportController.text,
+        idNumber: 0,
         phone: _phoneController.text,
         email: _emailController.text,
+        isApproved: false
       );
       context.read<RegisterBloc>().add(RegisterClient(client));
     }
@@ -106,7 +109,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => const ClientMainScreen()),
+                                builder: (_) => const AwaitConfirmationScreen()),
                           );
                         } else if (state is RegisterFailure) {
                           ScaffoldMessenger.of(context).showSnackBar(

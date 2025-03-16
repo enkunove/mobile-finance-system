@@ -38,10 +38,13 @@ class AccountManagementUsecases{
   Future<bool> deposit(int accountId, double amount) async {
     try {
       Account? a = await accountRepository.getAccount(accountId);
-      double balance = a!.balance;
-      balance += amount;
-      a.balance = balance;
-      return await accountRepository.updateAccount(accountId, a);
+      if (!a!.isFrozen && !a.isBlocked) {
+        double balance = a.balance;
+        balance += amount;
+        a.balance = balance;
+        await accountRepository.updateAccount(accountId, a);
+        return true;
+      } else return false;
 
     } on Exception catch (e) {
       print(e);
@@ -52,34 +55,43 @@ class AccountManagementUsecases{
   Future<bool> withdraw(int accountId, double amount) async{
     try {
       Account? a = await accountRepository.getAccount(accountId);
-      double balance = a!.balance;
-      if (amount <= balance) balance -= amount;
-      a.balance = balance;
-      return await accountRepository.updateAccount(accountId, a);
+      if (!a!.isFrozen && !a.isBlocked) {
+        double balance = a.balance;
+        if (amount <= balance) balance -= amount;
+        a.balance = balance;
+        await accountRepository.updateAccount(accountId, a);
+        return true;
+      } else {
+        return false;
+      }
     } on Exception catch (e) {
       print(e);
       return false;
     }
   }
 
-  Future<void> transfer(int fromAccountId, int toAccountId, double amount) async {
+  Future<bool> transfer(int fromAccountId, int toAccountId, double amount) async {
     try {
       Account? fromAccount = await accountRepository.getAccount(fromAccountId);
       Account? toAccount = await accountRepository.getAccount(toAccountId);
       double fromBalance = fromAccount!.balance;
       double toBalance = toAccount!.balance;
-      if (amount <= fromBalance) {
-        fromBalance -= amount;
-        toBalance += amount;
-      }
-      fromAccount.balance = fromBalance;
-      toAccount.balance = toBalance;
-      DateTime dateTime = DateTime.now();
-      Transfer transfer = Transfer(fromAccountId, toAccountId, amount, dateTime);
-      await accountRepository.actTransfer(fromAccount, toAccount, transfer);
+      if (fromAccount.isBlocked != true && fromAccount.isFrozen != true) {
+        if (amount <= fromBalance) {
+          fromBalance -= amount;
+          toBalance += amount;
+        }
+        fromAccount.balance = fromBalance;
+        toAccount.balance = toBalance;
+        DateTime dateTime = DateTime.now();
+        Transfer transfer = Transfer(fromAccountId, toAccountId, amount, dateTime);
+        await accountRepository.actTransfer(fromAccount, toAccount, transfer);
+        return true;
+      } else return false;
 
     } on Exception catch (e) {
       print(e);
+      return false;
     }
   }
 

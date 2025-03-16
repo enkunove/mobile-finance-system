@@ -3,5 +3,8 @@ import '../../entities/system_users/client.dart';
 abstract class ClientRepository {
 
   Future<bool>register(Client client);
-  Future<Client?>login(String username, String password);
+  Future<dynamic>login(String username, String password);
+  Future<void> updateClientById(Client client);
+  Future<List<Client>> getAllRegistrationRequests();
+  Future<void> deleteClient(int id);
 }
