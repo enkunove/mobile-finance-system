@@ -5,8 +5,8 @@ import 'package:finance_system_controller/features/finance_controller/presentati
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/core/injection_container.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/registration_state_management/register_bloc.dart';
-import '../../domain/usecases/client_usecases/registration_usecase.dart';
-import '../../domain/usecases/login.dart';
+import '../../domain/usecases/registration_usecase.dart';
+import '../../domain/usecases/login_usecases.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

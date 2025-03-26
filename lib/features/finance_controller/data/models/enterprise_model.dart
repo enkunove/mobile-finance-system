@@ -11,8 +11,10 @@ class EnterpriseModel extends Enterprise {
     required super.bic,
     required super.address,
     List<ClientModel>? clients,
+    int? specialistId,
   }) : super(
-    clients: clients ?? []
+    clients: clients ?? [],
+    specialistId: specialistId ?? null
   );
 
   Map<String, dynamic> toMap() {
@@ -23,7 +25,8 @@ class EnterpriseModel extends Enterprise {
       'pin': pin,
       'bic': bic,
       'address': address,
-      'clients': clients.isEmpty ? null : clients.map((c) => toMap()).toList()
+      'clients': clients.isEmpty ? null : clients.map((c) => toMap()).toList(),
+      'specialistId' : specialistId ?? null
     };
   }
 
@@ -38,6 +41,7 @@ class EnterpriseModel extends Enterprise {
       clients: map['clients'] != null
           ? List<ClientModel>.from(map['clients']?.map((client) => ClientModel.fromMap(client)))
           : [],
+      specialistId: map['specialistId'] ?? null
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/credits_confirmer_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/registration_confirmer_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class ManagerMainScreen extends StatelessWidget {
             SizedBox(height: 20,),
             ElevatedButton(
               onPressed: () {
-                Navigator.push(context, MaterialPageRoute(builder: (_) => const RegistrationConfirmerScreen()));
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const CreditsConfirmerScreen()));
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 30),

@@ -1,3 +1,4 @@
+import 'package:finance_system_controller/features/finance_controller/data/models/system_users/externalspecialist_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/system_users/client_repository.dart';
 
@@ -21,6 +22,8 @@ class LoginUsecase {
         return ManagerModel.fromMap(map);
       case "Operator":
         return OperatorModel.fromMap(map);
+      case "ExternalSpecialist":
+        return ExternalSpecialistModel.fromMap(map);
     }
   }
 }

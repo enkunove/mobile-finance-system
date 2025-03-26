@@ -25,6 +25,7 @@ class BankModel extends Bank {
     };
   }
 
+
   factory BankModel.fromMap(Map<String, dynamic> map) {
     return BankModel(
       id: map['id'],

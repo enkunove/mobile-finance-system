@@ -9,5 +9,6 @@ final class BankInfoLoading extends BankInfoState {}
 
 final class BankInfoLoaded extends BankInfoState {
   final Account? account;
-  BankInfoLoaded(this.account);
+  final Credit? credit;
+  BankInfoLoaded(this.account, this.credit);
 }

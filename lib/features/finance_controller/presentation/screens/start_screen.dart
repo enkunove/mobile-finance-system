@@ -1,3 +1,4 @@
+import 'package:finance_system_controller/core/database_helper.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/registration_confirmer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -73,12 +74,7 @@ class StartScreen extends StatelessWidget {
               const Spacer(),
               ElevatedButton(
                   onPressed: () async {
-                    await deleteDatabase(
-                        join(await getDatabasesPath(), 'banks_database.db'));
-                    await deleteDatabase(
-                        join(await getDatabasesPath(), 'accounts_database.db'));
-                    await deleteDatabase(
-                        join(await getDatabasesPath(), 'client_database.db'));
+                    await DatabaseHelper().clearDatabase();
                   },
                   child: const Text("очистить данные"))
             ],

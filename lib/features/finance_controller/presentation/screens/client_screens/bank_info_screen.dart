@@ -1,4 +1,6 @@
+import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/widgets/bank_info_header.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/widgets/credit_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -61,6 +63,7 @@ class _BankInfoScreenState extends State<BankInfoScreen> {
                             children: [
                               AccountWidget(account: state.account!, buildContext: context,),
                               const SizedBox(height: 20),
+                              CreditWidget(credit: state.credit, account: state.account, context: context)
                             ],
                           ),
                         );

@@ -9,6 +9,7 @@ class Enterprise{
   final String bic;
   final String address;
   final List<Client> clients;
+  final int? specialistId;
 
   Enterprise(
       {
@@ -19,8 +20,10 @@ class Enterprise{
         required this.name,
         required this.bic,
         List<Client>? clients,
+        int? specialistId,
       })
-      : clients = clients ?? [];
+      : clients = clients ?? [],
+        specialistId = specialistId ?? null;
 
   @override
   String toString() {
