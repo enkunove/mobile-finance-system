@@ -1,4 +1,3 @@
-import 'package:finance_system_controller/features/finance_controller/data/models/system_users/client_model.dart';
 import '../../domain/entities/bank.dart';
 
 class BankModel extends Bank {
@@ -9,10 +8,7 @@ class BankModel extends Bank {
     required super.pin,
     required super.bic,
     required super.address,
-    List<ClientModel>? clients,
-  }) : super(
-    clients: clients ?? [],
-  );
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -21,7 +17,6 @@ class BankModel extends Bank {
       'pin': pin,
       'bic': bic,
       'address': address,
-      'clients': clients.isEmpty ? null : clients.map((c) => toMap()).toList()
     };
   }
 
@@ -34,9 +29,6 @@ class BankModel extends Bank {
       pin: map['pin'],
       bic: map['bic'],
       address: map['address'],
-      clients: map['clients'] != null
-          ? List<ClientModel>.from(map['clients']?.map((client) => ClientModel.fromMap(client)))
-          : [],
     );
   }
 }

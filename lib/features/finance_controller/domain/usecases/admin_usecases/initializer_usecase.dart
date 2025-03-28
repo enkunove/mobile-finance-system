@@ -2,13 +2,13 @@ import 'package:finance_system_controller/features/finance_controller/data/datas
 import 'package:finance_system_controller/features/finance_controller/data/models/system_users/client_model.dart';
 
 import '../../../../../core/injection_container.dart';
-import '../../../data/datasources/banks_datasource.dart';
+import '../../../data/datasources/enterprises_datasource.dart';
 
 class InitializerUsecase {
   Future<void> initializeApplication() async {
-    final t1 = await InjectionContainer.sl<BanksDatasource>().getBanks();
+    final t1 = await InjectionContainer.sl<EnterprisesDatasource>().getBanks();
     if (t1 == [] || t1.isEmpty) {
-      await InjectionContainer.sl<BanksDatasource>().initBanks();
+      await InjectionContainer.sl<EnterprisesDatasource>().initBanks();
     }
     final t2 = await InjectionContainer.sl<ClientsDatasource>().getClients();
     if (t2 == [] || t2.isEmpty) {

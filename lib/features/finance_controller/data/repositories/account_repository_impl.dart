@@ -78,8 +78,73 @@ class AccountRepositoryImpl implements AccountRepository{
   }
 
   @override
+  Future<void> revertTransfer(Transfer transfer) async {
+    AccountModel? newFromModel;
+    AccountModel? newToModel;
+
+    if (transfer.source != "Банк") {
+      final exSender = await accountsDatasource.getAccountById(int.parse(transfer.source));
+      if (exSender != null) {
+        final fromModel = AccountModel.fromMap(exSender);
+        newFromModel = AccountModel(
+          clientId: fromModel.clientId,
+          bankId: fromModel.bankId,
+          accountId: fromModel.accountId,
+          balance: fromModel.balance + transfer.amount,
+          isBlocked: fromModel.isBlocked,
+          isFrozen: fromModel.isFrozen,
+        );
+        await accountsDatasource.updateAccount(newFromModel);
+      }
+    }
+
+    if (transfer.target != "Банк") {
+      final exReceiver = await accountsDatasource.getAccountById(int.parse(transfer.target));
+      if (exReceiver != null) {
+        final toModel = AccountModel.fromMap(exReceiver);
+        newToModel = AccountModel(
+          clientId: toModel.clientId,
+          bankId: toModel.bankId,
+          accountId: toModel.accountId,
+          balance: toModel.balance - transfer.amount,
+          isBlocked: toModel.isBlocked,
+          isFrozen: toModel.isFrozen,
+        );
+        await accountsDatasource.updateAccount(newToModel);
+      }
+    }
+
+    final newTransferModel = Transfer(
+      transfer.target,
+      transfer.source,
+      transfer.amount,
+      DateTime.now(),
+    );
+
+    await actTransfer(
+      newFromModel ?? AccountModel(clientId: 0, bankId: 0),
+      newToModel ?? AccountModel(clientId: 0, bankId: 0),
+      newTransferModel,
+    );
+  }
+
+
+  @override
   Future<List<Transfer>> getAllTransferredForClient(int clientId) async {
     final maps = await accountsDatasource.getAllTransfersForClient(clientId);
+    final models = List.generate(maps.length, (i) {
+      return TransferModel.fromMap(maps[i]);
+    });
+    final List<Transfer> result = [];
+    for (var m in models) {
+      result.add(Transfer(m.source, m.target, m.amount, m.dateTime));
+    }
+    return result;
+  }
+
+  @override
+  Future<List<Transfer>> getAllTransfers() async {
+    final maps = await accountsDatasource.getAllTransfers();
     final models = List.generate(maps.length, (i) {
       return TransferModel.fromMap(maps[i]);
     });

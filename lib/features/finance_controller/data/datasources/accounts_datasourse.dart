@@ -54,6 +54,11 @@ class AccountsDatasource {
         conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
+  Future<List<Map<String, dynamic>>> getAllTransfers() async{
+    final db = await _dbHelper.database;
+    return await db.query('transfers');
+  }
+
   Future<List<Map<String, dynamic>>> getAllTransfersForClient(int clientId) async {
     final db = await _dbHelper.database;
     final accountsMaps =

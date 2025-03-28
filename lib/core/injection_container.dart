@@ -2,19 +2,19 @@ import 'package:finance_system_controller/features/finance_controller/data/datas
 import 'package:finance_system_controller/features/finance_controller/data/repositories/account_repository_impl.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/account_repository.dart';
+import 'package:finance_system_controller/features/finance_controller/domain/usecases/externalspecialist_usecases/enterprises_usecases.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/registration_usecase.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/manager_usecases/manage_credits_usecases.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/manager_usecases/manage_registration_usecases.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/bank_info_state_management/bank_info_bloc.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/credit_state_management/credit_bloc.dart';
 import 'package:get_it/get_it.dart';
-import '../features/finance_controller/data/datasources/banks_datasource.dart';
+import '../features/finance_controller/data/datasources/enterprises_datasource.dart';
 import '../features/finance_controller/data/datasources/credits_datasource.dart';
 import '../features/finance_controller/data/repositories/bank_repository_impl.dart';
 import '../features/finance_controller/data/repositories/credit_repository_impl.dart';
 import '../features/finance_controller/domain/entities/bank.dart';
 import '../features/finance_controller/domain/entities/credit.dart';
-import '../features/finance_controller/domain/entities/system_users/manager.dart';
 import '../features/finance_controller/domain/repositories/bank_repository.dart';
 import '../features/finance_controller/domain/repositories/credit_repository.dart';
 import '../features/finance_controller/domain/usecases/admin_usecases/banks_management_usecases.dart';
@@ -34,7 +34,7 @@ class InjectionContainer {
   static Future<void> init() async {
     sl.registerLazySingleton<ClientsDatasource>(() => ClientsDatasource());
     sl.registerLazySingleton<AccountsDatasource>(() => AccountsDatasource());
-    sl.registerLazySingleton<BanksDatasource>(() => BanksDatasource());
+    sl.registerLazySingleton<EnterprisesDatasource>(() => EnterprisesDatasource());
     sl.registerLazySingleton<CreditsDatasource>(() => CreditsDatasource());
 
     sl.registerLazySingleton<ClientRepository>(
@@ -45,16 +45,17 @@ class InjectionContainer {
     sl.registerLazySingleton<CreditRepository>(() => CreditRepositoryImpl(sl()));
 
     sl.registerFactory<Client>(() => Client(
-      '', '',
+      username: '',
+      password:  '',
       fullName: '',
       passportSeriesAndNumber: '',
       idNumber: 0,
       phone: '',
       email: '',
-      isApproved: false
+      isApproved: false,
+      role: ''
     ));
 
-    sl.registerFactory<Manager>(() => Manager('manager', 'manager'));
     sl.registerFactory<RegisterUsecase>(() => RegisterUsecase(sl()));
     sl.registerLazySingleton<LoginUsecase>(() => LoginUsecase(sl()));
     sl.registerLazySingleton<AccountManagementUsecases>(() => AccountManagementUsecases(sl(), sl()));
@@ -62,9 +63,12 @@ class InjectionContainer {
     sl.registerLazySingleton<ManageRegistrationUsecases>(() => ManageRegistrationUsecases(sl()));
     sl.registerLazySingleton<ManageCreditsUsecases>(() => ManageCreditsUsecases(sl(), sl()));
     sl.registerLazySingleton<CreditUsecases>(() => CreditUsecases(sl(), sl(), sl()));
+    sl.registerLazySingleton<EnterprisesUsecases>(() => EnterprisesUsecases(sl(), sl()));
+
     sl.registerFactory<RegisterBloc>(() => RegisterBloc(
       registerUsecase: sl<RegisterUsecase>(),
       loginUsecase: sl<LoginUsecase>(),
+      bankManagementUsecases: sl<EnterprisesUsecases>()
     ));
     sl.registerFactory<LoginBloc>(() => LoginBloc(sl()));
     sl.registerFactoryParam<BankInfoBloc, Client, Bank>(
@@ -72,6 +76,5 @@ class InjectionContainer {
     sl.registerFactoryParam<CreditBloc, Account, Credit?>(
           (account, credit) => CreditBloc(sl(), sl(), account, credit),
     );
-
   }
 }

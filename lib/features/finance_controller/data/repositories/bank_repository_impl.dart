@@ -1,18 +1,22 @@
-import 'package:finance_system_controller/features/finance_controller/data/datasources/banks_datasource.dart';
+import 'package:finance_system_controller/features/finance_controller/data/datasources/enterprises_datasource.dart';
 import 'package:finance_system_controller/features/finance_controller/data/models/bank_model.dart';
+import 'package:finance_system_controller/features/finance_controller/data/models/enterprise_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/bank.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/bank_repository.dart';
 
+import '../../domain/entities/enterprise.dart';
+
 class BankRepositoryImpl implements BankRepository{
 
-  final BanksDatasource banksDatasource;
+  final EnterprisesDatasource banksDatasource;
 
   BankRepositoryImpl({required this.banksDatasource});
 
   @override
-  Future<bool> addBank(Bank bank) async {
-    BankModel model = BankModel(id: bank.id, type: bank.type, name: bank.name, pin: bank.pin, bic: bank.bic, address: bank.address);
+  Future<bool> addBank(Enterprise bank) async {
+    EnterpriseModel model = EnterpriseModel(id: bank.id, type: bank.type, name: bank.name, pin: bank.pin, bic: bank.bic, address: bank.address, specialistId: bank.specialistId);
     await banksDatasource.insertBank(model.toMap());
+    print("Impl: $model");
     return true;
   }
 

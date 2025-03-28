@@ -1,8 +1,5 @@
 import 'package:finance_system_controller/core/database_helper.dart';
-import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/registration_confirmer_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 class StartScreen extends StatelessWidget {
   const StartScreen({super.key});

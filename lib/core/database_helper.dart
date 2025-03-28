@@ -56,22 +56,10 @@ class DatabaseHelper {
     await db.execute('''
       CREATE TABLE transfers (
         transferId INTEGER PRIMARY KEY AUTOINCREMENT,
-        source INTEGER,
-        target INTEGER,
+        source TEXT,
+        target TEXT,
         amount REAL DEFAULT 0.0,
         dateTime TEXT
-      );
-    ''');
-
-    await db.execute('''
-      CREATE TABLE banks (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        type TEXT NOT NULL,
-        name TEXT NOT NULL,
-        pin TEXT NOT NULL,
-        bic TEXT NOT NULL,
-        address TEXT NOT NULL,
-        clients TEXT
       );
     ''');
 
@@ -83,7 +71,7 @@ class DatabaseHelper {
         pin TEXT NOT NULL,
         bic TEXT NOT NULL,
         address TEXT NOT NULL,
-        clients TEXT,
+        bankId INTEGER,
         specialistId INTEGER
       );
     ''');
@@ -108,7 +96,7 @@ class DatabaseHelper {
   Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
     await db.execute('DROP TABLE IF EXISTS transfers');
     await db.execute('DROP TABLE IF EXISTS accounts');
-    await db.execute('DROP TABLE IF EXISTS banks');
+    await db.execute('DROP TABLE IF EXISTS enterprises');
     await db.execute('DROP TABLE IF EXISTS clients');
     await db.execute('DROP TABLE IF EXISTS credits');
     await _onCreate(db, newVersion);
@@ -118,7 +106,7 @@ class DatabaseHelper {
     await db.execute('DELETE FROM clients');
     await db.execute('DELETE FROM accounts');
     await db.execute('DELETE FROM transfers');
-    await db.execute('DELETE FROM banks');
+    await db.execute('DELETE FROM enterprises');
     await db.execute('DELETE FROM credits');
     String path = join(await getDatabasesPath(), 'finance_system.db');
     await deleteDatabase(path);

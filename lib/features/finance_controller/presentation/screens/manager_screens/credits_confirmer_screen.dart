@@ -1,6 +1,5 @@
 import 'package:finance_system_controller/core/injection_container.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/usecases/manager_usecases/manage_registration_usecases.dart';
 import 'package:flutter/material.dart';
 import '../../../domain/usecases/manager_usecases/manage_credits_usecases.dart';
 import '../../widgets/credit_request_widget.dart';

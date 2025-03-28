@@ -14,10 +14,11 @@ class RegisterClient extends RegisterEvent {
   List<Object> get props => [client];
 }
 
-class RegisterSpecialist extends RegisterEvent{
-  final ExternalSpecialist externalSpecialist;
+class RegisterEnterprise extends RegisterEvent{
+  final Enterprise enterprise;
 
-  RegisterSpecialist(this.externalSpecialist);
+  RegisterEnterprise(this.enterprise);
+
   @override
-  List<Object> get props => [externalSpecialist];
+  List<Object> get props => [enterprise];
 }

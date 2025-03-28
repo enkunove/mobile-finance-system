@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/bank.dart';
+import '../screens/client_screens/bank_enterprises_screen.dart';
 
 class BankInfoHeader extends StatefulWidget {
   final Bank bank;
@@ -53,6 +54,18 @@ class _BankInfoHeaderState extends State<BankInfoHeader> {
             "Юридический адрес: ${widget.bank.address}",
             style: const TextStyle(fontSize: 16),
           ),
+          Text(
+            "Юридический адрес: ${widget.bank.specialistId}",
+            style: const TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 10,),
+          TextButton(onPressed: (){
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => BankEnterprisesScreen(widget.bank.id)),
+            );
+          }, child: const Text("Перейти к предприятиям банка"))
         ],
       ),
     );

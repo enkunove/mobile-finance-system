@@ -1,6 +1,6 @@
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'dart:async';
+
+import 'package:finance_system_controller/features/finance_controller/data/models/system_users/externalspecialist_model.dart';
 
 import '../../../../core/database_helper.dart';
 import '../models/system_users/client_model.dart';
@@ -15,6 +15,10 @@ class ClientsDatasource {
   Future<int> insertClient(ClientModel client) async {
     final db = await _dbHelper.database;
     return await db.insert('clients', client.toMap());
+  }
+  Future<int> insertExternalSpecialist(ExternalSpecialistModel model) async {
+    final db = await _dbHelper.database;
+    return await db.insert('clients', model.toMap());
   }
 
   Future<dynamic> login(String password, String username) async{
@@ -33,7 +37,7 @@ class ClientsDatasource {
 
   Future<List<ClientModel>> getUnconfirmedClients() async {
     final db = await _dbHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('clients', where: 'isApproved = ?', whereArgs: [0]);
+    final List<Map<String, dynamic>> maps = await db.query('clients', where: 'isApproved = ? AND role = ? OR isApproved = ? AND role = ?', whereArgs: [0, "Client", 0, "ExternalSpecialist"]);
     print(maps);
     return List.generate(maps.length, (i) {
       return ClientModel.fromMap(maps[i]);

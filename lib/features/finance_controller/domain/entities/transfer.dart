@@ -1,7 +1,7 @@
 
 class Transfer{
-  final int source;
-  final int target;
+  final String source;
+  final String target;
   final double amount;
   final DateTime dateTime;
 

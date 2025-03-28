@@ -1,5 +1,4 @@
 import '../entities/credit.dart';
-import '../entities/system_users/client.dart';
 
 abstract class CreditRepository{
   Future<void> openCreditRequest(Credit credit);

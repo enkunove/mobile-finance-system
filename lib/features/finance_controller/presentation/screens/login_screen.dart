@@ -1,12 +1,12 @@
 import 'package:finance_system_controller/features/finance_controller/data/models/system_users/externalspecialist_model.dart';
+import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/admin.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/manager.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/operator.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/login_state_management/login_bloc.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/admin_screens/admin_main_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/await_confirmation_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/client_main_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/externalspecialist_screens/externalspecialist_main_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/manager_main_screen.dart';
-import 'package:finance_system_controller/features/finance_controller/presentation/screens/manager_screens/registration_confirmer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
@@ -15,6 +15,7 @@ import 'package:finance_system_controller/features/finance_controller/presentati
 
 import '../../data/models/system_users/manager_model.dart';
 import '../../data/models/system_users/operator_model.dart';
+import '../../domain/usecases/externalspecialist_usecases/enterprises_usecases.dart';
 import '../../domain/usecases/registration_usecase.dart';
 import '../../domain/usecases/login_usecases.dart';
 
@@ -50,6 +51,8 @@ class _LoginScreenState extends State<LoginScreen> {
         create: (_) => RegisterBloc(
           registerUsecase: InjectionContainer.sl<RegisterUsecase>(),
           loginUsecase: InjectionContainer.sl<LoginUsecase>(),
+          bankManagementUsecases: InjectionContainer.sl<EnterprisesUsecases>()
+
         ),
         child: Builder(
           builder: (context) {
@@ -122,6 +125,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => const ExternalSpecialistMainScreen()),
+                            );
+                          }if (state.user is Admin){
+                            InjectionContainer.sl.unregister<Admin>();
+                            InjectionContainer.sl
+                                .registerSingleton<Admin>(state.user);
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => const AdminMainScreen()),
                             );
                           }
                         } else if (state is LoginFailure) {

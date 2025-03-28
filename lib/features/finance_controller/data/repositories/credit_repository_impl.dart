@@ -1,7 +1,6 @@
 import 'package:finance_system_controller/features/finance_controller/data/datasources/credits_datasource.dart';
 import 'package:finance_system_controller/features/finance_controller/data/models/credit_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/credit_repository.dart';
 
 class CreditRepositoryImpl implements CreditRepository{

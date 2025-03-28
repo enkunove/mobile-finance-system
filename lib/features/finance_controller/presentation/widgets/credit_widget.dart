@@ -67,7 +67,7 @@ class _CreditWidgetState extends State<CreditWidget> {
                           .toStringAsFixed(2),
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold)),
-                      SizedBox(
+                      const SizedBox(
                         height: 30,
                       ),
                       Center(

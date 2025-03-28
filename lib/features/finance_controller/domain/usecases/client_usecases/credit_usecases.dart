@@ -1,9 +1,9 @@
 import 'package:finance_system_controller/features/finance_controller/domain/entities/account.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/repositories/account_repository.dart';
-import 'package:finance_system_controller/features/finance_controller/domain/repositories/system_users/client_repository.dart';
 
 import '../../entities/system_users/client.dart';
+import '../../entities/transfer.dart';
 import '../../repositories/credit_repository.dart';
 
 
@@ -45,15 +45,15 @@ class CreditUsecases {
     if (account!.balance >= monthlyPayment && !account.isFrozen &&
         !account.isBlocked) {
       if (credit.remainedToPay >= monthlyPayment) {
-        await accountRepository.updateAccount(
-          account.accountId,
-          Account(
-            clientId: account.clientId,
-            bankId: account.bankId,
-            balance: account.balance - monthlyPayment,
-            accountId: account.accountId,
-          ),
+        DateTime dateTime = DateTime.now();
+        Transfer transfer = Transfer(account.accountId.toString(), "Банк",  monthlyPayment, dateTime);
+        final newAccount = Account(
+          clientId: account.clientId,
+          bankId: account.bankId,
+          balance: account.balance - monthlyPayment,
+          accountId: account.accountId,
         );
+        await accountRepository.actTransfer(newAccount, Account(clientId: 0, bankId: 0), transfer);
         double newRemainedToPay = double.parse(
           (credit.remainedToPay - monthlyPayment).toStringAsFixed(2),
         );
@@ -70,15 +70,15 @@ class CreditUsecases {
         await creditRepository.editCredit(updatedCredit);
         return updatedCredit;
       } else {
-        await accountRepository.updateAccount(
-          account.accountId,
-          Account(
-            clientId: account.clientId,
-            bankId: account.bankId,
-            balance: account.balance - credit.remainedToPay,
-            accountId: account.accountId,
-          ),
+        DateTime dateTime = DateTime.now();
+        Transfer transfer = Transfer(account.accountId.toString(), "Банк", credit.remainedToPay, dateTime);
+        final newAccount = Account(
+          clientId: account.clientId,
+          bankId: account.bankId,
+          balance: account.balance - credit.remainedToPay,
+          accountId: account.accountId,
         );
+        await accountRepository.actTransfer(newAccount, Account(clientId: 0, bankId: 0), transfer);
         await creditRepository.closeCredit(credit.id);
         return null;
       }

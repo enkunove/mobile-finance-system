@@ -2,8 +2,10 @@ import 'package:finance_system_controller/features/finance_controller/data/datas
 import 'package:finance_system_controller/features/finance_controller/data/models/system_users/client_model.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 
+import '../../../domain/entities/system_users/system_user.dart';
 import '../../../domain/repositories/system_users/client_repository.dart';
 import '../../datasources/clients_datasource.dart';
+import '../../models/system_users/externalspecialist_model.dart';
 
 class ClientRepositoryImpl implements ClientRepository {
   final ClientsDatasource clientsDatasource;
@@ -12,10 +14,18 @@ class ClientRepositoryImpl implements ClientRepository {
   ClientRepositoryImpl({required this.clientsDatasource, required this.accountsDatasource,});
 
   @override
-  Future<bool> register(Client client) async {
+  Future<bool> register(User user) async {
     try {
-      ClientModel model = ClientModel(username: client.username, password: client.password, fullName: client.fullName, passportSeriesAndNumber: client.passportSeriesAndNumber, idNumber: client.idNumber, phone: client.phone, email: client.email, isApproved: client.isApproved, role: "Client");
-      clientsDatasource.insertClient(model);
+      print(user);
+      if(user is Client){
+        ClientModel model = ClientModel(username: user.username, password: user.password, fullName: user.fullName, passportSeriesAndNumber: user.passportSeriesAndNumber, idNumber: user.idNumber, phone: user.phone, email: user.email, isApproved: user.isApproved, role: user.role);
+        clientsDatasource.insertClient(model);
+      }
+      else{
+        ExternalSpecialistModel model = ExternalSpecialistModel(username: user.username, password: user.password, fullName: user.fullName, passportSeriesAndNumber: user.passportSeriesAndNumber, idNumber: user.idNumber, phone: user.phone, email: user.email, isApproved: user.isApproved, role: user.role);
+        clientsDatasource.insertExternalSpecialist(model);
+      }
+
       return true;
     } catch (e) {
       return false;
@@ -33,8 +43,8 @@ class ClientRepositoryImpl implements ClientRepository {
   }
 
   @override
-  Future<void> updateClientById(Client client) async {
-    ClientModel model = ClientModel(username: client.username, password: client.password, fullName: client.fullName, passportSeriesAndNumber: client.passportSeriesAndNumber, idNumber: client.idNumber, phone: client.phone, email: client.email, isApproved: client.isApproved, role: "Client");
+  Future<void> updateClientById(User client) async {
+    ClientModel model = ClientModel(username: client.username, password: client.password, fullName: client.fullName, passportSeriesAndNumber: client.passportSeriesAndNumber, idNumber: client.idNumber, phone: client.phone, email: client.email, isApproved: client.isApproved, role: client.role);
     await clientsDatasource.updateClient(model);
     return Future.value();
   }
@@ -45,7 +55,7 @@ class ClientRepositoryImpl implements ClientRepository {
 
 
   @override
-  Future<List<Client>> getAllRegistrationRequests() async {
+  Future<List<User>> getAllRegistrationRequests() async {
     final list = await clientsDatasource.getUnconfirmedClients();
     return list;
   }

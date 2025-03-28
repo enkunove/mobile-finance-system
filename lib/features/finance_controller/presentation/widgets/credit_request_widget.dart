@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../../domain/entities/credit.dart';
-import '../../domain/entities/system_users/client.dart';
 
 class CreditRequestWidget extends StatelessWidget {
   final Credit credit;
@@ -21,7 +20,7 @@ class CreditRequestWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 6,
@@ -33,7 +32,7 @@ class CreditRequestWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Запрос клиента", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text("Запрос клиента", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
           _buildInfoRow("ID пользователя", credit.clientId.toString()),
           _buildInfoRow("Срок (мес)", credit.months.toString()),
@@ -45,11 +44,11 @@ class CreditRequestWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                icon: Icon(Icons.close, color: Colors.red),
+                icon: const Icon(Icons.close, color: Colors.red),
                 onPressed: () => onReject(credit),
               ),
               IconButton(
-                icon: Icon(Icons.check, color: Colors.green),
+                icon: const Icon(Icons.check, color: Colors.green),
                 onPressed: () => onAccept(credit),
               ),
             ],
@@ -64,7 +63,7 @@ class CreditRequestWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Text("$label: ", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
           Expanded(child: Text(value, overflow: TextOverflow.ellipsis)),
         ],
       ),

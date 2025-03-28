@@ -44,7 +44,9 @@ class AccountManagementUsecases{
         a.balance = balance;
         await accountRepository.updateAccount(accountId, a);
         return true;
-      } else return false;
+      } else {
+        return false;
+      }
 
     } on Exception catch (e) {
       print(e);
@@ -70,10 +72,10 @@ class AccountManagementUsecases{
     }
   }
 
-  Future<bool> transfer(int fromAccountId, int toAccountId, double amount) async {
+  Future<bool> transfer(String fromAccountId, String toAccountId, double amount) async {
     try {
-      Account? fromAccount = await accountRepository.getAccount(fromAccountId);
-      Account? toAccount = await accountRepository.getAccount(toAccountId);
+      Account? fromAccount = await accountRepository.getAccount(int.parse(fromAccountId));
+      Account? toAccount = await accountRepository.getAccount(int.parse(toAccountId));
       double fromBalance = fromAccount!.balance;
       double toBalance = toAccount!.balance;
       if (fromAccount.isBlocked != true && fromAccount.isFrozen != true) {
@@ -84,10 +86,12 @@ class AccountManagementUsecases{
         fromAccount.balance = fromBalance;
         toAccount.balance = toBalance;
         DateTime dateTime = DateTime.now();
-        Transfer transfer = Transfer(fromAccountId, toAccountId, amount, dateTime);
+        Transfer transfer = Transfer(fromAccountId.toString(), toAccountId.toString(), amount, dateTime);
         await accountRepository.actTransfer(fromAccount, toAccount, transfer);
         return true;
-      } else return false;
+      } else {
+        return false;
+      }
 
     } on Exception catch (e) {
       print(e);
@@ -108,5 +112,12 @@ class AccountManagementUsecases{
 
   Future<List<Transfer>> getAllTransferredForClient(int clientId) async {
     return await accountRepository.getAllTransferredForClient(clientId);
+  }
+  Future<List<Transfer>> getAllTransfers() async {
+    return await accountRepository.getAllTransfers();
+  }
+
+  Future<void> revertTransfer(Transfer transfer) async{
+    await accountRepository.revertTransfer(transfer);
   }
 }

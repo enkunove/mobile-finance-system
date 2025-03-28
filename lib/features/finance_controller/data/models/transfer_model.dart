@@ -2,9 +2,9 @@ import 'package:finance_system_controller/features/finance_controller/domain/ent
 
 class TransferModel extends Transfer{
   @override
-  final int source;
+  final String source;
   @override
-  final int target;
+  final String target;
   @override
   final double amount;
   @override

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import '../../domain/entities/system_users/client.dart';
+import '../../domain/entities/system_users/system_user.dart';
 
 class RequestWidget extends StatelessWidget {
-  final Client client;
-  final void Function(Client) onAccept;
-  final void Function(Client) onReject;
+  final User user;
+  final void Function(User) onAccept;
+  final void Function(User) onReject;
 
   const RequestWidget({
     super.key,
-    required this.client,
+    required this.user,
     required this.onAccept,
     required this.onReject,
   });
@@ -20,7 +20,7 @@ class RequestWidget extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 6,
@@ -32,26 +32,26 @@ class RequestWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text("Запрос клиента", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          const Text("Запрос клиента", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
           const SizedBox(height: 8),
-          _buildInfoRow("Имя пользователя", client.username),
-          _buildInfoRow("Полное имя", client.fullName),
-          _buildInfoRow("Паспорт", client.passportSeriesAndNumber),
-          _buildInfoRow("ID", client.idNumber.toString()),
-          _buildInfoRow("Телефон", client.phone),
-          _buildInfoRow("Email", client.email),
-          _buildInfoRow("Одобрен", client.isApproved ? "Да" : "Нет"),
+          _buildInfoRow("Имя пользователя", user.username),
+          _buildInfoRow("Полное имя", user.fullName),
+          _buildInfoRow("Паспорт", user.passportSeriesAndNumber),
+          _buildInfoRow("ID", user.idNumber.toString()),
+          _buildInfoRow("Телефон", user.phone),
+          _buildInfoRow("Email", user.email),
+          _buildInfoRow("Одобрен", user.isApproved ? "Да" : "Нет"),
           const SizedBox(height: 12),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               IconButton(
-                icon: Icon(Icons.close, color: Colors.red),
-                onPressed: () => onReject(client),
+                icon: const Icon(Icons.close, color: Colors.red),
+                onPressed: () => onReject(user),
               ),
               IconButton(
-                icon: Icon(Icons.check, color: Colors.green),
-                onPressed: () => onAccept(client),
+                icon: const Icon(Icons.check, color: Colors.green),
+                onPressed: () => onAccept(user),
               ),
             ],
           ),
@@ -65,7 +65,7 @@ class RequestWidget extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Text("$label: ", style: TextStyle(fontWeight: FontWeight.bold)),
+          Text("$label: ", style: const TextStyle(fontWeight: FontWeight.bold)),
           Expanded(child: Text(value, overflow: TextOverflow.ellipsis)),
         ],
       ),

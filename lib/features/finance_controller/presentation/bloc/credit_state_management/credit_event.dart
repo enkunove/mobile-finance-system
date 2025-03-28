@@ -41,7 +41,7 @@ class SendCreditRequestEvent extends CreditEvent{
   final double percentage;
   final double sum;
 
-  SendCreditRequestEvent(this.months, this.percentage, this.sum);
+  const SendCreditRequestEvent(this.months, this.percentage, this.sum);
 
   @override
   List<Object?> get props => [months, percentage, sum];
@@ -49,7 +49,7 @@ class SendCreditRequestEvent extends CreditEvent{
 
 class UpdateCreditEvent extends CreditEvent {
   final Credit? credit;
-  UpdateCreditEvent(this.credit);
+  const UpdateCreditEvent(this.credit);
 }
 
 class CancelCreditRequestEvent extends CreditEvent{}

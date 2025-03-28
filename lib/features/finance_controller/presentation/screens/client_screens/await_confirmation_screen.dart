@@ -7,7 +7,7 @@ class AwaitConfirmationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.blueAccent,),
-      body: Center(child: Text("Ожидается подтверждение регистрации от менеджера"),),
+      body: const Center(child: Text("Ожидается подтверждение регистрации от менеджера"),),
     );
   }
 }

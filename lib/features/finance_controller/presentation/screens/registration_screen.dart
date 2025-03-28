@@ -1,7 +1,8 @@
+import 'package:finance_system_controller/features/finance_controller/domain/usecases/externalspecialist_usecases/enterprises_usecases.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/await_confirmation_screen.dart';
+import 'package:finance_system_controller/features/finance_controller/presentation/screens/externalspecialist_screens/externalspecialist_registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:finance_system_controller/features/finance_controller/presentation/screens/client_screens/client_main_screen.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/entities/system_users/client.dart';
 import 'package:finance_system_controller/core/injection_container.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/bloc/registration_state_management/register_bloc.dart';
@@ -27,14 +28,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void _register(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       final client = Client(
-        _usernameController.text,
-        _passwordController.text,
+        username: _usernameController.text,
+        password: _passwordController.text,
         fullName: _fullNameController.text,
         passportSeriesAndNumber: _passportController.text,
         idNumber: 0,
         phone: _phoneController.text,
         email: _emailController.text,
-        isApproved: false
+        isApproved: false,
+        role: "Client"
       );
       context.read<RegisterBloc>().add(RegisterClient(client));
     }
@@ -52,6 +54,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         create: (_) => RegisterBloc(
           registerUsecase: InjectionContainer.sl<RegisterUsecase>(),
           loginUsecase: InjectionContainer.sl<LoginUsecase>(),
+          bankManagementUsecases: InjectionContainer.sl<EnterprisesUsecases>()
         ),
         child: Builder(
           builder: (context) {
@@ -132,10 +135,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             backgroundColor: Colors.blueAccent,
                           ),
-                          child: const Text('Зарегистрироваться'),
+                          child: const Text('Зарегистрироваться', style: TextStyle(color: Colors.black),),
                         );
                       },
                     ),
+                    const SizedBox(height: 20,),
+                    TextButton(onPressed: (){
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const ExternalSpecialistRegistrationScreen())
+                      );
+                    }, child: const Text("Являетесь специалистом стороннего предприятия?", style: TextStyle(color: Colors.black),))
                   ],
                 ),
               ),)

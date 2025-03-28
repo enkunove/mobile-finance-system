@@ -2,14 +2,15 @@ import 'package:finance_system_controller/features/finance_controller/domain/ent
 
 class ExternalSpecialistModel extends ExternalSpecialist {
   ExternalSpecialistModel(
-      super.username,
-      super.password, {
-        required super.fullName,
-        required super.passportSeriesAndNumber,
-        required super.idNumber,
-        required super.phone,
-        required super.email,
-        required super.isApproved,
+      {required super.username,
+      required super.password,
+      required super.fullName,
+      required super.passportSeriesAndNumber,
+      required super.idNumber,
+      required super.phone,
+      required super.email,
+      super.isApproved,
+      required super.role
       });
 
   Map<String, dynamic> toMap() {
@@ -18,23 +19,24 @@ class ExternalSpecialistModel extends ExternalSpecialist {
       'password': password,
       'fullName': fullName,
       'passportSeriesAndNumber': passportSeriesAndNumber,
-      'idNumber': idNumber,
       'phone': phone,
       'email': email,
-      'isApproved': isApproved? 1:0,
+      'role' : "ExternalSpecialist",
+      'isApproved': isApproved ? 1 : 0,
     };
   }
 
   factory ExternalSpecialistModel.fromMap(Map<String, dynamic> map) {
     return ExternalSpecialistModel(
-      map['username'] as String,
-      map['password'] as String,
+      username: map['username'] as String,
+      password: map['password'] as String,
       fullName: map['fullName'] as String,
       passportSeriesAndNumber: map['passportSeriesAndNumber'] as String,
       idNumber: map['idNumber'] as int,
       phone: map['phone'] as String,
       email: map['email'] as String,
-      isApproved: map['isApproved'] == 1? true:false,
+        role: map['role']
+
     );
   }
 }

@@ -42,6 +42,6 @@ class CreditState extends Equatable {
 }
 
 class UpdateStatusState extends CreditState{
-  UpdateStatusState({required super.term, required super.percentage, required super.sum, required super.credit});
+  const UpdateStatusState({required super.term, required super.percentage, required super.sum, required super.credit});
 
 }

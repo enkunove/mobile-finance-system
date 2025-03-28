@@ -2,7 +2,7 @@ import 'package:finance_system_controller/core/injection_container.dart';
 import 'package:finance_system_controller/features/finance_controller/domain/usecases/manager_usecases/manage_registration_usecases.dart';
 import 'package:flutter/material.dart';
 
-import '../../../domain/entities/system_users/client.dart';
+import '../../../domain/entities/system_users/system_user.dart';
 import '../../widgets/registration_request_widget.dart';
 
 class RegistrationConfirmerScreen extends StatefulWidget {
@@ -16,7 +16,7 @@ class RegistrationConfirmerScreen extends StatefulWidget {
 class _RegistrationConfirmerScreenState
     extends State<RegistrationConfirmerScreen> {
   late final ManageRegistrationUsecases usecase;
-  late Future<List<Client>> _clientsFuture;
+  late Future<List<User>> _clientsFuture;
 
   @override
   void initState() {
@@ -25,14 +25,14 @@ class _RegistrationConfirmerScreenState
     _clientsFuture = fetchClients();
   }
 
-  Future<List<Client>> fetchClients() async {
+  Future<List<User>> fetchClients() async {
     return await usecase.getAllRegistrationRequests();
   }
 
-  void _removeClient(Client client) {
+  void _removeClient(User user) {
     setState(() {
       _clientsFuture = _clientsFuture.then((clients) {
-        return clients.where((c) => c.idNumber != client.idNumber).toList();
+        return clients.where((c) => c.idNumber != user.idNumber).toList();
       });
     });
   }
@@ -44,7 +44,7 @@ class _RegistrationConfirmerScreenState
         backgroundColor: Colors.blueAccent,
         title: const Text("Подтверждение регистрации"),
       ),
-      body: FutureBuilder<List<Client>>(
+      body: FutureBuilder<List<User>>(
         future: _clientsFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -58,16 +58,16 @@ class _RegistrationConfirmerScreenState
               padding: const EdgeInsets.all(8),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                final client = snapshot.data![index];
+                final user = snapshot.data![index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(vertical: 4),
                   child: RequestWidget(
-                    client: client,
-                    onAccept: (Client c) async {
+                    user: user,
+                    onAccept: (User c) async {
                       await usecase.confirmRegistration(c);
                       _removeClient(c);
                     },
-                    onReject: (Client c) async {
+                    onReject: (User c) async {
                       await usecase.declineRegistration(c);
                       _removeClient(c);
                     },

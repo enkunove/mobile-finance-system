@@ -9,6 +9,5 @@ class Bank extends Enterprise {
         required super.address,
         required super.name,
         required super.bic,
-        super.clients,
       });
 }

@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../../domain/entities/system_users/client.dart';
 import '../../../domain/usecases/login_usecases.dart';
 
 part 'login_event.dart';

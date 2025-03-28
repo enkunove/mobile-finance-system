@@ -1,13 +1,21 @@
 import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
 
 class CreditModel extends Credit{
+  @override
   final int id;
+  @override
   final int clientId;
+  @override
   final int accountId;
+  @override
   final int months;
+  @override
   final double percentage;
+  @override
   final double amount;
+  @override
   final double remainedToPay;
+  @override
   final bool isApproved;
 
   CreditModel(

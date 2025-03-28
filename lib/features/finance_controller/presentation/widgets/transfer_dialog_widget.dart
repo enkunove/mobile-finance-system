@@ -77,7 +77,7 @@ class _TransferDialogState extends State<TransferDialog> {
                 final target = await _usecase.getAccountById(targetId);
                 if (target != null && widget.id != targetId) {
                   bool res = await _usecase.transfer(
-                      widget.id, targetId, _transferAmount);
+                      widget.id.toString(), targetId.toString(), _transferAmount);
                   if (res == true) {
                     Navigator.of(context).pop();
                     ScaffoldMessenger.of(context).showSnackBar(

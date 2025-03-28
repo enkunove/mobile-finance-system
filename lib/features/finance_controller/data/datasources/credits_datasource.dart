@@ -1,6 +1,4 @@
 import 'package:finance_system_controller/features/finance_controller/data/models/credit_model.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 import '../../../../core/database_helper.dart';
 

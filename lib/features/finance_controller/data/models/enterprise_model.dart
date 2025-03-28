@@ -1,4 +1,3 @@
-import 'package:finance_system_controller/features/finance_controller/data/models/system_users/client_model.dart';
 
 import '../../domain/entities/enterprise.dart';
 
@@ -10,12 +9,9 @@ class EnterpriseModel extends Enterprise {
     required super.pin,
     required super.bic,
     required super.address,
-    List<ClientModel>? clients,
-    int? specialistId,
-  }) : super(
-    clients: clients ?? [],
-    specialistId: specialistId ?? null
-  );
+    super.specialistId,
+    super.bankId
+  });
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,8 +21,8 @@ class EnterpriseModel extends Enterprise {
       'pin': pin,
       'bic': bic,
       'address': address,
-      'clients': clients.isEmpty ? null : clients.map((c) => toMap()).toList(),
-      'specialistId' : specialistId ?? null
+      'specialistId' : specialistId,
+      'bankId' : bankId
     };
   }
 
@@ -38,10 +34,8 @@ class EnterpriseModel extends Enterprise {
       pin: map['pin'],
       bic: map['bic'],
       address: map['address'],
-      clients: map['clients'] != null
-          ? List<ClientModel>.from(map['clients']?.map((client) => ClientModel.fromMap(client)))
-          : [],
-      specialistId: map['specialistId'] ?? null
+      specialistId: map['specialistId'],
+      bankId: map['bankId']
     );
   }
 }

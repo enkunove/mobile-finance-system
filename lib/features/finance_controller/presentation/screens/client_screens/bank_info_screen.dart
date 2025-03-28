@@ -1,17 +1,14 @@
-import 'package:finance_system_controller/features/finance_controller/domain/entities/credit.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/widgets/bank_info_header.dart';
 import 'package:finance_system_controller/features/finance_controller/presentation/widgets/credit_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import '../../../../../core/injection_container.dart';
-import '../../../domain/entities/account.dart';
 import '../../../domain/entities/bank.dart';
 import '../../../domain/entities/system_users/client.dart';
 import '../../../domain/usecases/client_usecases/account_management_usecases.dart';
 import '../../bloc/bank_info_state_management/bank_info_bloc.dart';
 import '../../widgets/account_widget.dart';
-import '../../widgets/transfer_dialog_widget.dart';
 
 class BankInfoScreen extends StatefulWidget {
   final Bank bank;

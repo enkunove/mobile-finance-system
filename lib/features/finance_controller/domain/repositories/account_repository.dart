@@ -10,5 +10,7 @@ abstract class AccountRepository{
   Future<bool> deleteAccount(int accountId);
   Future<bool> updateAccount(int accountId, Account account);
   Future<void> actTransfer(Account from, Account to, Transfer transfer);
+  Future<void> revertTransfer(Transfer transfer);
   Future<List<Transfer>> getAllTransferredForClient(int clientId);
+  Future<List<Transfer>> getAllTransfers();
 }
