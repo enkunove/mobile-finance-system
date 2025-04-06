@@ -54,16 +54,9 @@ class EnterprisesDatasource {
 
   Future<void> initBanks() async {
     List<Map<String, dynamic>> banks = [
-      BankModel(id: 0, type: "ОАО", name: "Ебанк", pin: "7892312314421", bic: "089-4242882", address: "ул. Пиздюлькина, дом 1").toMap(),
-      BankModel(id: 0, type: "АО", name: "Пизданк", pin: "1234567890123", bic: "045004234", address: "ул. Пиздюлькина, дом 2").toMap(),
-      BankModel(id: 0, type: "ЗАО", name: "Владислав Клепацкий", pin: "2345678901234", bic: "049876543", address: "где-то возле общаги").toMap(),
-      BankModel(id: 0, type: "ОАО", name: "Рехаб-банк", pin: "3456789012345", bic: "040354345", address: "ул. Пиздюлькина, дом 3").toMap(),
-      BankModel(id: 0, type: "АО", name: "СВО-банк", pin: "4567890123456", bic: "041876543", address: "ул. Пиздюлькина, дом 4").toMap(),
-      BankModel(id: 0, type: "ЗАО", name: "кнаБ", pin: "5678901234567", bic: "042348734", address: "ул. Пиздюлькина, дом 5").toMap(),
-      BankModel(id: 0, type: "ОАО", name: "Хуянк", pin: "6789012345678", bic: "040612563", address: "ул. Пиздюлькина, дом 6").toMap(),
-      BankModel(id: 0, type: "АО", name: "Пельмень", pin: "7890123456789", bic: "042145678", address: "ул. Пиздюлькина, дом 7").toMap(),
-      BankModel(id: 0, type: "ЗАО", name: "Чебупель", pin: "8901234567890", bic: "044525666", address: "ул. Пиздюлькина, дом 8").toMap(),
-      BankModel(id: 0, type: "ОАО", name: "Пиздабанк", pin: "9012345678901", bic: "040614752", address: "ул. Пиздюлькина, дом 9").toMap(),
+      BankModel(id: 0, type: "ОАО", name: "Банк1", pin: "7892312314421", bic: "089-4242882", address: "ул. Вффыфы, дом 1").toMap(),
+      BankModel(id: 0, type: "АО", name: "Банк2", pin: "1234567890123", bic: "045004234", address: "ул. Вффыфы, дом 2").toMap(),
+      BankModel(id: 0, type: "ЗАО", name: "Банк3", pin: "2345678901234", bic: "049876543", address: "ул. Вффыфы, дом 3").toMap(),
     ];
     for (var bank in banks) {
       await insertBank(bank);
